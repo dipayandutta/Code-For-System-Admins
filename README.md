@@ -1,15 +1,1 @@
-
-USE:- programm to count number of indivual files 
-      #and also total files , work as ls | wc -l 
-      #with indivual file counter . 
-
-Usage :- #just move this file in the directory 
-	 #change the permission to execute mode
-	 #chmod a+x file_details.sh
-	 #And run it 
-	 #./file_details.sh 
-
-version : - 0.1 (More Mdification will be uploaded)
-
-NOTE : - This program is also a good example of case and for loop 
-
+As a System Administrator and RHCE Certified i am very much interested to create applications that will be helpful for daily life system admins job, in the working field i found that integrating some logic and my programming skill i can make better tools both cli and GUI for system admins . As a programming language i picked up old trusted unix native shell script along with the most advance language python . Most of my tools are linux system admins , please free to download , use and share. 
