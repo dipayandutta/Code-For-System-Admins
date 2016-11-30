@@ -3,13 +3,17 @@ Program Name :- GUI_system_Details.py
 Purpose :- Get the System Detils in GUI Mode
 Application - To get the system details
 Author = Dipayan Dutta
+version 2
+Disk Space and RAM also added
 '''
-
+from __future__ import division
 from Tkinter import *
 import os
 import platform
 import grp
 import time
+import commands
+
 
 class Example(Frame):
     def __init__(self,parent):
@@ -83,6 +87,21 @@ class Example(Frame):
             message_frame = Frame(self.parent,width=300,height=100)
             message_frame.pack()
             message_label = Label(message_frame,text="Host does not Belongs its own group")
+
+        total_mem_frame = Frame(self.parent,width=300,height=100)
+        total_mem_frame.pack()
+        command = "df -h --total | tail -1"
+        total_mem = commands.getoutput(command)
+        total_mem_label = Label(total_mem_frame,text="Disk Space "+str(total_mem))
+        total_mem_label.pack()
+
+        ram_frame = Frame(self.parent,width=300,height=100)
+        ram_frame.pack()
+        command = "cat /proc/meminfo | awk '{print $2}'| head -1"
+        ram_size = int(commands.getoutput(command))/1024
+        ram_size_gb = round(float(ram_size)/1024,2);
+        ram_label = Label(ram_frame,text=str("RAM => ")+str(ram_size_gb)+" GB")
+        ram_label.pack()
 
         system_os_frame = Frame(self.parent,width=300,height=100)
         system_os_frame.pack()
