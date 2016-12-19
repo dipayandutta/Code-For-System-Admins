@@ -1,4 +1,3 @@
-
 #Author:-Dipayan Dutta
 
 #USE:- programm to count number of indivual files 
@@ -32,6 +31,8 @@ html_count=0
 css_count=0
 js_count=0
 php_count=0
+json_count=0
+
 
 for file in $(ls)
 do 
@@ -76,6 +77,9 @@ do
 	php)
 	php_count=`expr $php_count + 1`;
 	;;
+	json)
+	json_count=`expr $json_count + 1`;
+	;;
 	*) 
 	file_with_out_extension=`expr $file_with_out_extension + 1`;
 	;;
@@ -98,8 +102,9 @@ echo "Total html file ==>"$html_count;
 echo "Total css file ==>"$css_count;
 echo "Total js file ==>"$js_count;
 echo "Total php file ==>"$php_count;
+echo "Total number of JSON File ==>"$json_count;
 echo "File with out Extension ==>"$file_with_out_extension;
 
-total_files=$(( $c_count + $sh_count + $txt_count + $java_count + $cpp_count +$py_count + $doc_count + $pdf_count + $file_with_out_extension + $html_count + $css_count + $js_count + $php_count));
+total_files=$(( $c_count + $sh_count + $txt_count + $java_count + $cpp_count +$py_count + $doc_count + $pdf_count + $file_with_out_extension + $html_count + $css_count + $js_count + $php_count +$json_count));
 
 echo "total Number of files in the diretory == >"$total_files;
