@@ -5,11 +5,11 @@
 
 #creating a function name - backup
 function backup(){
-	
+	today=$(date '+%d-%b-%Y')
 	#creating a directory with current date
-	mkdir sqlbackup_$(date '+%d-%b-%Y')
+	mkdir sqlbackup_$today
 	#changing my directory location	
-	cd sqlbackup_$(date '+%d-%b-%Y')
+	cd sqlbackup_$today
 	#reading Database name
 	echo "Enter Database Name"
 	read dbname
