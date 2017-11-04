@@ -1,0 +1,88 @@
+sudo apt-get update
+
+#Install apache2 server
+sudo apt-get install apache2
+
+#Install build-essential
+sudo apt-get install build-essential
+
+#Install libgd2-xpm-dev
+sudo apt-get install libgd2-xpm-dev
+
+#Install apache2-utils
+sudo apt-get install apache2-utils
+
+#Install unzip
+sudo apt-get install unzip
+
+#Install php 
+sudo apt-get install php5
+
+#add a user ==> nagios
+sudo useradd -m nagios
+
+#add a group nagcmd
+sudo groupadd nagcmd
+
+#add nagios user in the nagcmd group
+usermod -a -G nagcmd nagios
+usermod -a -G nagcmd www-data
+
+#Download nagios and nagios plugin
+ wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.1.1.tar.gz
+
+ wget http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz
+
+#Extract nagios 
+tar xvf nagios-4.1.1.tar.gz
+
+#Enter into the nagios directory
+cd nagios-4.1.1/
+
+#Installation process of Nagios Core beigns 
+
+sudo ./configure --with-command-group=nagcmd
+sudo make all
+sudo make install
+sudo make install-init
+sudo make install-config
+sudo make install-commandmode
+
+#Transfer the configuration file in the apache2's site-available directory
+sudo /usr/bin/install -c -m 644 sample-config/httpd.conf /etc/apache2/sites-enabled/nagios.conf
+
+#check the file existence
+sudo ls -l /etc/apache2/sites-enabled
+
+#give the htpasswd authentication
+sudo htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+
+#Restart the apache2 
+sudo service apache2 restart
+
+
+#Extract the nagios-plugin directory
+tar xvf nagios-plugins-2.1.1.tar.gz 
+
+#Enter to the nagios-plugin directory
+cd nagios-plugins-2.1.1/
+
+#Installation process for nagios-plugin
+ sudo ./configure --with-nagios-users=nagios --with-nagios-group=nagios
+sudo make 
+sudo make install
+sudo a2enmod rewrite
+sudo a2enmod cgi
+
+#Restart apache2 service
+sudo service apache2 restart
+
+#Check the nagios Configuration
+sudo /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg 
+
+#Start the nagios service
+sudo service nagios start
+
+#Check the status of nagios service
+sudo service nagios status
+
