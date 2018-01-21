@@ -1,0 +1,97 @@
+create a directory
+
+create the repo
+---------------------
+git init
+
+create a file in the repo
+----------------------------
+vim file1 
+
+
+add and commit
+------------------
+git add file1
+git commit -m "File1 is commited to upload"
+
+check the log
+--------------------
+git log
+
+check the status
+-------------------
+git status
+
+
+[*]git automatically create the branch Default one is Master
+[*]Branches allow us to work on different version of the same file in parallel , edit on one branch
+will not effect on the other branch.
+[*] Branches have a special pointer called HEAD , which points a SHA1 algorithm number , some times
+is call symbolic pointer
+
+
+
+To check the commit graph
+--------------------------
+git log --all --decorate --oneline --graph
+
+
+create new bracnhes
+-----------------------
+git branch <branchname>
+
+show all the branches
+-----------------------
+git branch
+
+Branch Checkout
+----------------------
+git checkout <branchname>
+
+check the status
+-------------------
+git status 
+
+This will show the new branch name
+
+Edit and commit in the new bracnh
+----------------------------------
+
+git add file1
+git commit -m "In the New Bracnh"
+
+
+This will add the file1 in the new branch
+
+show the Changes of two different branch
+-----------------------------------------
+git diff <branchname>..<branchname>
+
+
+Checkout and switch to new branch
+-----------------------------------
+git checkout -b <branchname>
+
+
+Delete branches
+------------------
+
+git branch --merged [check which branches are already merged]
+
+git bracnh -d <branchname>
+
+force delete
+git branch -D <branchname>
+
+
+Merge
+------------
+git merge <branchname>
+
+This will merge with the master branch
+
+
+Merge Conflicts
+-------------------
+This will occur when merge the same file which is edited on the same line
+
