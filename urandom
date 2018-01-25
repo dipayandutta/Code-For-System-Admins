@@ -1,0 +1,77 @@
+
+					/dev/urandom
+-------------------------------------------------------------------------------------------------
+
+It's a file like device, so you can do things like cat it or copy from it. For instance:
+
+dd if=/dev/urandom of=~/urandom_test count=4 bs=1024
+
+Creates a file containing 4K of random bytes.
+
+cat /dev/urandom > ~/urandom_test2 
+
+Will continue to write random bytes to that file until you hit Ctrl-C. Don't do this on a low performing system...
+
+head -30 /dev/urandom > ~/urandom_test3
+
+
+
+use in shell
+------------------
+$head -c 500 /dev/urandom | tr -dc 'a-zA-Z0-9~!@#$%^&*_-' | fold -w 3 | head -n 1
+
+(If you want literal dash characters, the dash character must go at the end of the string as done above, as opposed to *-_).
+
+And to explain what gets done due to the above set of commands:
+
+    head -c 500 /dev/urandom: Obtain the first 500 characters (bytes) from /dev/urandom.
+    tr -dc 'a-zA-Z0-9~!@#$%^&*_-': Remove all but the characters specified in 'a-zA-Z0-9~!@#$%^&*_-' from the output of the first command.
+    fold -w 3: Format the output of the second command such that it has 3 characters per line.
+    head -n 1: Display the first line of the result of the third command on stdout.
+
+
+generate 4 bytes random numbers
+---------------------------------
+od -vAn -N4 -tu4 < /dev/urandom
+
+to generate unsigned decimal 4 bytes random numbers.
+
+
+generate random string
+-------------------------
+cat /dev/urandom | head -c 5 | base64
+cat /dev/urandom | head -c 5 | base32
+
+
+# bash generate random 32 character alphanumeric string (upper and lowercase) and 
+----------------------------------------------------------------------------------
+NEW_UUID=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)
+
+# bash generate random 32 character alphanumeric string (lowercase only)
+---------------------------------------------------------------------------
+cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1
+
+# Random numbers in a range, more randomly distributed than $RANDOM which is not
+# very random in terms of distribution of numbers.
+--------------------------------------------------------------------------------
+# bash generate random number between 0 and 9
+cat /dev/urandom | tr -dc '0-9' | fold -w 256 | head -n 1 | head --bytes 1
+
+# bash generate random number between 0 and 99
+-----------------------------------------------------
+NUMBER=$(cat /dev/urandom | tr -dc '0-9' | fold -w 256 | head -n 1 | sed -e 's/^0*//' | head --bytes 2)
+
+echo $NUMBER
+
+# bash generate random number between 0 and 999
+-------------------------------------------------------
+NUMBER=$(cat /dev/urandom | tr -dc '0-9' | fold -w 256 | head -n 1 | sed -e 's/^0*//' | head --
+bytes 3)
+
+
+
+python code
+-----------------
+with open("/dev/random", 'rb') as file: print [ord(x) for x in file.read(10)]
+echo $NUMBER
+
