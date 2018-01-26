@@ -1,0 +1,176 @@
+Technologies Need to understand before working with docker
+
+1) Bash(Unix Shell)
+2) Package Managment
+3) Git
+4) Python
+5) Vagrant
+6) go = Docker is written using Go
+
+
+Installing Docker on Ubuntu 14.04
+=====================================
+
+$ sudo apt-get update
+$ sudo apt-get install -y docker.io
+
+
+Download the latest docker version
+===================================
+$ sudo curl -sSL htts://get.docker.com | sudo sh
+
+
+Check The version of the installed docker
+==========================================
+$ docker --version
+
+
+running docker without the sudo command
+=========================================
+
+$ sudo usermod -aG docker $USER
+			
+			OR
+$ sudo gpasswd -a <user> docker
+
+
+
+Vagrant Configuration for docker creation
+===========================================
+
+Vagrant.configure(2) do |config|
+	config.vm.hostname = "ubuntu/trusty64"
+	config.vm.network "private_network", ip:"192.168.33.2"
+	config.vm.provider "virtualbox" do |vb|
+		vb.customize ["modifyvm", :id,"--memory","1024"]
+	end
+
+	config.vm.provision :shell, :path => "docker-bootstrap.sh"
+
+end
+
+
+docker-bootstrap.sh
+====================
+
+#!/bin/bash
+
+sudo apt-get update
+sudo apt-get install -y install docker.io
+sudo gpasswd -a vagrant dokcer
+sudo service docker.io restart
+
+
+$ vagrant up
+$ vagrant ssh
+
+
+check the available docker images
+====================================
+
+$ docker search ubuntu
+
+pull an image
+==================
+$ docker pull <image name>
+
+check the available/downloaded images in the system
+====================================================
+$ docker images
+
+To remove an image of stopped container
+========================================
+
+$ docker rmi <container_name>
+
+To run a container
+=====================
+$ docker run -i -t <image_name"ubuntu:14:04"> /bin/bash
+
+
+Run Docker in Detached mode
+==============================
+
+$ docker run -d -p 1234:1234 python:2.7 python -m SimpleHTTPServer 1234
+
+This command will keep running the container and exposing port 1234 to docker host 1234
+
+Dcoker decides its own portforwarding using the P  option  and exposing port 1234 with the --expose option
+
+$ docker run -d -P --expose=1234 python:2.7 python -m SimpleHTTPServer 1234
+$ docker port <container_id>
+
+Restart a container
+=======================
+$ docker restart <container_id>
+
+Remove a container
+=====================
+$ docker rm <container_id>
+
+
+Remove all Suspended Containers
+====================================
+$ docker rm $(docker ps -a -q)
+
+
+
+Sharing host data with a container
+=====================================
+Use the -v option  of docker run to mount a host volume in the contianer
+
+Example , to share the working directory of your host into a /cookbook  directory in a container
+
+$ docker run -i -t -v $PWD:/cookbook ubuntu:14.04 /bin/bash
+
+Inspect the mount mapping with the docker inspect  command 
+
+$ docker inspect -f <container_id>
+
+
+Copying Data To and From Containers
+====================================
+
+$ docker run -d --name testcopy ubuntu:14.04 sleep 360
+$ docker exec it testcopy /bin/bash
+
+root@xasd123234# cd /root ; echo "Hello World" > file.txt ; exit
+
+$ docker cp testcopy:/root/file.txt
+$ cat file.txt
+
+To Copy from the host to the Container
+======================================
+
+$ echo "I am in the host machine " >> hostmachine.txt
+$ docker exec -u testcopy sh -c 'cat /root/hostmachine.txt' < hostmachine.txt
+$ docker exec -i testcopy sh -c 'cat /root/hostmachine.txt'
+
+
+To Copy from One Container to Another Container
+================================================
+$ docker cp c1:/root/file.txt .
+$ docker exec -i c2 sh -c 'cat > /root/file.txt' < file.txt
+
+
+Docker Commit
+===============
+Let's start a container with an interactive bash shell and update it 
+
+$ docker run -i -t ubuntu:14:04  /bin/bash
+root@69701adsae /# apt-get update
+
+ now on the host machine 
+ $ docker commit 69701adsae ubuntu:update
+
+
+ Saving images in tar file for sharing
+ ==========================================
+
+ $ docker export <container_id> > container.tar
+
+ Import a container
+ ===================
+ $ docker import -update < container.tar
+
+ 
