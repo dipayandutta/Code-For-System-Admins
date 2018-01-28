@@ -7,6 +7,9 @@ Technologies Need to understand before working with docker
 5) Vagrant
 6) go = Docker is written using Go
 
+===================================================|
+Dcoker Engine have the ability to run Containers   | 
+===================================================|
 
 Installing Docker on Ubuntu 14.04
 =====================================
@@ -58,7 +61,7 @@ docker-bootstrap.sh
 sudo apt-get update
 sudo apt-get install -y install docker.io
 sudo gpasswd -a vagrant dokcer
-sudo service docker.io restart
+sudo service docker.io restartdocker build -t dipayan/alpine-install:1.0 .
 
 
 $ vagrant up
@@ -78,13 +81,22 @@ check the available/downloaded images in the system
 ====================================================
 $ docker images
 
+
+To start a docker 
+==================
+$ docker run --name ubu -d -i -t ubuntu
+
+To attach with a already running container
+=============================================
+$ docker attach ubu<container_name>
+
 To remove an image of stopped container
 ========================================
 
 $ docker rmi <container_name>
 
 To run a container
-=====================
+=====================docker build -t dipayan/alpine-install:1.0 .
 $ docker run -i -t <image_name"ubuntu:14:04"> /bin/bash
 
 
@@ -173,4 +185,178 @@ root@69701adsae /# apt-get update
  ===================
  $ docker import -update < container.tar
 
+
+
+Basic of Dockerfile
+========================
+
+Create a Dockerfile(with a capital D) in a directory
+
+FROM alpine
+CMD ["echo", "hello world!"]
+COPY script.sh /script.sh
+CMD ["./script.sh"]
+
+to create the image 
+
+$ docker build . 
+
+This will create the image but only with the image ID not the name 
+
+$ docker run --name test <container ID>
+
+
+Running nginx Docker
+=-=====================
+
+$ docker pull nginx:1.10.2-alpine
+$ docker run --name nginx-alpine -p 80:80 nginx:1.10.2-alpine(This command will not give the prompt back)
+
+Running the container in background
+$ docker run --name nginx-alpine -d -p 80:80 nginx:1.10.2-alpine
+
+Run command inside the container from the localhost
+$ docker exec -ti nginx-alpine /bin/bash
+
+To stop the container
+
+$ docker stop nginx-alpine
+
+
+Example commands to host a website from host with running from a container
+
+$ docker pull nginx 
+
+$ docker run --name nginx-image -d -v /work/docker/index.html:/usr/share/nginx/html/index.html -p 80:80 nginx
+
+
+DockerFile Example To create a New image
+FROM nginx
+MAINTAINER inbox.dipayan@gmail.com
+COPY ./file.txt	/etc/nginx/file.txt
+
+
+
+Docker Run and Remove 
+========================
+$ docker run -it --rm alpine:3.4 /bin/sh
+
+
+
+Basic DockerFile example on alpine
+====================================
+FROM alpine:3.4
+MAINTAINER Dipayan Dutta
+
+RUN apk update
+RUN apk add vim
+RUN apk add cur
+
+
+Run The dockerfile (To Build The Image)
+============================================
+docker build -t dipayan/alpine-install:1.0 .
+
+Now Check the image is created
+================================
+
+docker images 
+
+
+Check the intermediatory Images (image Cache)
+==================================
+
+$ docker images -a 
+
+
+
+Docker Dangling Image
+=========================
+
+If a image does not have any name then this is called a Dangling Image
+
+How to check a Dangling Image??
+================================
+
+$ docker images --filter "dangling=true"
+
+
+Remove a dangling image
+===========================
+
+$ docker rmi $(docker images -q --filter "dangling=true")
+
+
+
+Dockerfile steps
+===========================
+
+1. Pick the right image
+2. Run the image and start play with it , check all is OK
+3. create a Dockerfile
+
+
+Docker Dangling Volumes
+============================
+$ docker volume ls -qf dangling=true
+
+
+Delete the Dangling Volumes
+=============================
+
+$ docker volume rm $(docker volume ls -qf dangling=true)
+
+
+
+Run alpine python
+========================
+
+FROM python:3.6.1-alpine
+
+RUN apk update && apk add build-base
+
+RUN ln -s /usr/include/locale.h /usr/include/locale.h
+
+RUN pip install numpy
+
+
+
+An php Container Example installing composer inside the container
+=======================================================================
+
+Dockerfile
+
+FROM php:7.1.2-apache
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
+    php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
+    php composer-setup.php &&\
+    php -r "unlink('composer-setup.php');"
+    mv composer.phar /usr/local/bin/composer
+    
  
+COPY ./composer.json /var/www/html
+
+RUN apt-get update && \
+    apt-get upgrade && \
+    apt-get install build-essential -y && \
+    apt-get install git -y
+
+RUN composer install
+    
+Now create the JSON and write down the dependecies
+======================================================
+
+composer.json
+
+{
+    "require":{
+            "slim/slim": "^3.0"
+    }
+}
+    
+    
+Map current directory of the localhost with the working directory of the image
+==================================================================================
+
+$ docker run --rm -v $(pwd):/var/www/html -v /var/www/html/vendor -p 80:80 <image name>
