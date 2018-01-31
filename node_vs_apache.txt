@@ -1,0 +1,262 @@
+Nodejs >
+
+
+Node installation using nvm   (Node Version Manager)
+
+curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.31.0/install.sh -o install_nvm.sh
+bash install_nvm.sh
+source ~/.profile
+nvm ls-remote
+nvm install <version_name>
+nvm use <version>
+nvm list
+check the node version
+node -v
+
+check npm version
+npm --version
+
+[*] Advantage of using nvm installation -
+            [1] switch between multiple node version as required.
+                [2] check all available node versions from a single command .
+          [3] get the latest node version when required.
+
+[*]Simple HTTP Server running from the terminal[*]
+
+The javascript file
+
+
+
+var http = require('http')
+http.createServer(function(req,res){
+    res.writeHead(200,{'Content-Type': 'text/plain'});
+    res.end('HTTP example server!\n');
+}).listen(8080,'172.28.128.40');
+console.log('Server is running...')
+
+#running the server from port 8080
+#on the ip address 172.28.128.40
+
+
+to run the file
+$node filename.js
+
+Access the server 
+ http://172.28.128.40:8080 
+
+
+[*]run a server that starts from a index.html file[*]
+
+server.js
+------------
+var http = require('http');
+var fs   = require('fs');
+
+const PORT=8080;
+
+fs.readFile('./index.html',function(err,html){
+    if (err)
+        throw err;
+    
+    http.createServer(function(req,res){
+        res.writeHeader(200,{"Content-Type":"text/html"});
+        res.write(html);
+        res.end();
+    }).listen(PORT,'172.28.128.40');
+});
+console.log('Server is running ...');
+
+index.html
+------------
+<h2>Hello World </h2>
+<p>from index.html file</p>
+
+put the index.html on the same directory
+
+
+
+
+
+
+
+
+[*]structural running of an application[*]
+
+create directory
+
+mkdir <directory_name>
+cd <directory_name>
+
+install express in root of app : npm install --save express
+
+create a public folder in root of your app and put your entry point file (index.html) and all its dependent files
+
+mkdir public
+cd public
+vim index.html
+
+cd ..
+
+vim server.js
+
+var express = require('express')
+var app        = express();
+
+app.use(express.static(__dirname + '/public'));
+var port = 8000;
+app.listen(port);
+console.log('server on' + port);
+
+
+
+
+
+
+
+
+[*]running HTTPS node server[*]
+
+generate the ssl certificate
+
+openssl req  -x509 -days 365 -newkey rsa:1024  -keyout hostkey.pem -nodes -out hostcert.pem
+
+
+serverhttps.js
+
+var https = require('https');
+var fs        = require('fs');
+
+const PORT=8080;
+
+var options = {
+        key:     fs.readFileSync('hostkey.pem'),
+        cert: fs.readFileSync('hostcert.pem')
+};
+
+https.createServer(options,function(req,res){
+    res.writeHead(200);
+    res.end("HTTPS application...\n");
+}).listen(PORT,'172.28.128.40');
+
+console.log('Server is running ....');
+
+
+
+
+
+[*]ip based virtual hosting[*]
+
+adding secondary ip address on the same interface
+sudo ip addr add 172.28.128.41 dev eth1
+
+
+server.js
+var http = require('http')
+http.createServer(function(req,res){
+    res.writeHead(200,{'Content-Type': 'text/plain'});
+    res.end('Virtual Server !\n');
+}).listen(8000,'172.28.128.41');
+console.log('Server is running...')
+
+
+Create the entry in base machines /etc/hosts 
+172.28.128.40    node.example.cn
+172.28.128.41    node1.example.cn
+
+
+Run the server 
+Access it http://node1.example.cn:8000/
+NPM troubleshoot
+
+if npm shows the error while installation of npm packages
+rollbackFailedOptional:
+
+then use this
+
+npm config set registry http://registry.npmjs.org/
+so that npm requests for http url instead of https.
+
+then try the command
+
+npm install express
+
+
+
+
+nodejs server management using pm2
+
+
+npm install -g pm2
+
+pm2 commands
+----------------
+pm2 start server.js
+pm2 monitor <app id>
+pm2 list
+pm2 show <app id>
+pm2 cpu
+pm2 stop <app id>
+pm2 status
+pm2 restart <app id>
+
+
+Check the status 
+
+
+
+Get the information of single app
+
+
+
+[*]loop delay[*] ==> Loop delay is an interval whereby they set a function that loops and count how many ms off from the timer they set it is. It is not requests per second, it is the amount of milliseconds of delay time it took to execute the interval.... meaning the event loop was blocked for that period of time.
+
+                Apache vs nodejs
+                -----------------
+
+1.Apache is thread and process based i.e each request is handled by a separate thread or process (depending upon configuration), which means if the process is waiting for the I/O, whole thread is blocked. Node JS has asynchronous, event driven I/O. Every nodejs instance runs in a single thread and due to its asynchronous nature, it can handle far more number of concurrent requests as compared to apache.
+
+2. Apache is thread based, so if an unexpected problem occurs while processing a request, only that particular thread will crash leaving rest of the requests and threads intact. Node Js handles multiple requests using one single thread. If a problem occurs whole node js instance will crash along with any global data that was stored in javascript variables or arrays. It can be automatically restarted using "forever" or some other modules but the current requests and the data is gone.
+
+3. when Apache gets a request which is CPU intensive, other request do not get blocked because of the context switching between the threads. when NodeJs gets a CPU intensive request, all the other requests get blocked till this CPU intensive request stops for an I/O. its a good idea to delegate CPU intensive requests to a worker or some other process while using Node Js.
+
+4. httpd is an http server and node is a runtime environment.
+
+
+Example of Response
+--------------------
+
+var http = require('http') ....(1)
+var server=http.createServer((function(request,response)....(2)
+{
+    response.writeHead(200,{"Content-Type":"text/plain"});...(3)
+    response.end("Hello Wolrd\n");...(4)
+}));
+
+server.listen(7000);....(5)
+
+(1) --> Call the http Library / Module
+(2) --> Create the server using http module
+(3) --> Set the Content Header
+(4) --> Send the String to response
+(5) --> Make the server listen on port 7000
+
+Example of Request
+-------------------
+var request = require("request");....(1)
+    request("http://www.google.com",function(error,response,body)...(2)
+    {
+        console.log(body);
+    });
+
+
+(1) --> We are using the 'require' module which was installed in the last step. This module has the necessary functions which can be used to make GET requests to websites.
+
+
+(2) --> We are making a GET Request to www.google.com and subsequently calling a function when a response is received. When a response is received the parameters(error, response, and body) will have the following values
+
+    Error – In case there is any error received when using the GET request, this will be recorded here.
+    Response- The response will have the http headers which are sent back in the response.
+    Body- The body will contain the entire content of the response sent by Google.
+
+
+
