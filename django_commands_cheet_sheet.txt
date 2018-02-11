@@ -1,0 +1,55 @@
+Create the django Project
+
+mkdir django
+cd django
+pip install virtualenv
+virutalenv projectname
+
+cd projectname
+
+source bin/active
+pip freeze
+
+
+Install the django 
+=====================
+pip install Django==1.10
+
+Migrate the database
+=====================
+python manage.py migrate
+
+
+create a Project
+====================
+python manage.py startproject example
+
+create administration Account
+==============================
+python manage.py createsuperuser
+
+
+
+Create a application
+==================
+python manage.py startapp profiles
+
+
+Add the application in INSTALLED_APPS
+=====================================
+
+open settings.py 
+line number 33
+INSTALLED_APPS=['PROFILES']
+
+MIGRATE
+========
+python manage.py makemigrations
+
+python manage.py migrate
+
+
+Create Server
+===============
+python manage.py runserver
+
