@@ -1,0 +1,70 @@
+ sudo apt-get install gpgv2 autoconf bison build-essential curl git-core libapr1 libaprutil1 libcurl4-openssl-dev libgmp3-dev libpcap-dev libpq-dev libreadline6-dev libsqlite3-dev libssl-dev libsvn1 libtool libxml2 libxml2-dev libxslt-dev libyaml-dev locate ncurses-dev openssl postgresql postgresql-contrib wget xsel zlib1g zlib1g-dev
+
+
+ sudo su postgres 
+
+ createuser msfuser -S -R -P
+ createdb msfdb -O msfuser
+
+ sudo update-rc.d postgresql enable
+
+ gpg --keyserver hkp://keys.gnupg.net --recv-keys  409B6B1796C275462A1703113804BB82D39DC0E3
+
+curl -sSL https://get.rvm.io | bash -s stable --ruby
+
+source ~/.rvm/scripts/rvm
+
+git clone https://github.com/rapid7/metasploit-framework.git
+
+ls -ltr
+
+cd metasploit-framework/
+
+ls -l
+
+rvm --install .ruby-version
+
+cd ..
+
+rvm --install .ruby-version
+
+rvm install "ruby-2.4.3
+
+cd metasploit-framework/
+
+rvm install "ruby-2.4.3"
+
+gem install bundler
+
+bundle install
+
+echo "source ~/.rvm/scripts/rvm">> ~/.bashrc 
+
+ls -l
+
+cd ~.msf4
+
+vim database.yml
+  1 # Development Database
+  2 development: &pgsql
+  3   adapter: postgresql
+  4   database: msfdb
+  5   username: msfuser
+  6   password: node
+  7   host: localhost
+  8   port: 5432
+  9   pool: 5
+ 10   timeout: 5
+ 11 
+ 12 # Production database -- same as dev
+ 13 production: &production
+ 14   <<: *pgsql
+ 15 
+ 16 # Test database -- not the same, since it gets dropped all the time
+ 17 test:
+ 18   <<: *pgsql
+ 19   database: msfdb
+
+
+./msfconsole 
+
