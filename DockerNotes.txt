@@ -360,3 +360,8 @@ Map current directory of the localhost with the working directory of the image
 ==================================================================================
 
 $ docker run --rm -v $(pwd):/var/www/html -v /var/www/html/vendor -p 80:80 <image name>
+
+
+EXAMPLE OF RUNNING A NGINX CONTAINER IMAGE WHOSE FILES ARE LOCATED IN THE LOCAL MACHINE 
+=========================================================================================
+docker run -p 8080:80 --name webserver -v /root/index.html:/usr/share/nginx/html/index.html:ro -detach nginx
