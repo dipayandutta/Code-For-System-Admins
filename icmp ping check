@@ -1,0 +1,1 @@
+tcpdump -i eth0 icmp and icmp[icmptype]=icmp-echo
