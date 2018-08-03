@@ -1,0 +1,11 @@
+interface statistics
+ethtool eth0
+
+To enable autonegotiation
+ethtool -s eth0 autoneg on
+
+To disable auto negotiation
+
+ethtool -s etho autoneg off 
+
+sudo ethtool -s enp1s0 autoneg off speed 100 duplex full
