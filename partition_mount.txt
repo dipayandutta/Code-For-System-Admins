@@ -1,0 +1,17 @@
+fdisk /dev/vdb
+command (m for help): p 
+command (m for help): n
+select (default p):p
+Partition number: 1
+First Sector : enter
+sapce : +1G
+command(m for help): w
+
+# partprobe 
+mkfs - t ext4 /dev/vdb1 [format the newly creted partition]
+mkdir /archive 
+blkid /dev/vdb1
+/etc/fstab
+<blkid of the newly partitioned device > /archive ext4 defaults 0 2 
+
+# mount -a 
