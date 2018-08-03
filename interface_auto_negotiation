@@ -1,21 +1,25 @@
-interface statistics
+====>interface statistics
 ethtool eth0
 
-To enable autonegotiation
+====> To enable autonegotiation
 ethtool -s eth0 autoneg on
 
-To disable auto negotiation
+====> To disable auto negotiation
 
 ethtool -s etho autoneg off 
 
 sudo ethtool -s enp1s0 autoneg off speed 100 duplex full
 
-Making changes permanent
+===>Making changes permanent
 
-If you need to have this settings every time you boot up the PC, you have to add a command in the /etc/network/interfaces file, so:
+===>If you need to have this settings every time you boot up the PC, you have to add a command in the /etc/network/interfaces file, so:
 
 sudo vim /etc/network/interfaces
 
-And at the beginning of the file add:
+===>And at the beginning of the file add:
 
 pre-up /usr/sbin/ethtool -s em1 autoneg off 100 duplex full
+
+===>Restart the interface to apply changes:
+
+ifdown eth0 && ifup eth0
