@@ -21,3 +21,19 @@ netstat -s
 # To continous monitor 
 netstat -ic 
 
+--------------
+Promiscous mode - Promiscuous mode is a type of computer networking operational mode in which
+all network data packets can be accessed and viewed by all network adapters operating in this mode.
+
+To activate the  promiscous mode. Use:
+
+ip link set eth1 promisc on
+
+The flag will be updated to BMPRU. Flag details are as follows:
+
+    B flag is for broadcast
+    M flag is for multicast
+    P flag is for promisc mode
+    R is for running
+    U is for up
+
