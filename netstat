@@ -1,0 +1,23 @@
+# List of active connections and ips that are connected 
+netstat -ntu | awk '{print $5}' | sort | uniq -c | sort -n
+
+# to show the interface flag
+netstat -i 
+
+# Display the routing information by the kernel
+netstat -r 
+
+# Check the interface information
+netstat -i 
+
+RX-OK   : Correct packets received on this interface.
+RX-ERR : Incorrect packets received on this interface
+RX-DRP : Packets that were dropped at this interface.
+RX-OVR : Packets that this interface was unable to receive. 
+
+# Get the summary of all protocols 
+netstat -s 
+
+# To continous monitor 
+netstat -ic 
+
