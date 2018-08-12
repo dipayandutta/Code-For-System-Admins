@@ -1,0 +1,53 @@
+# to get the icmp packets
+tcpdump -i eth0 icmp
+
+# command will capture all the packets from 135.250.80.55 and to 135.250.80.55
+tcpdump -i any -s 0 -v -w ping.pcap 135.250.80.55
+
+#Capture any packets where the destination host is 192.168.1.1. Display IP addresses and port numbers:
+
+tcpdump -n dst host 192.168.1.1
+
+Capture any packets where the source host is 192.168.1.1. Display IP addresses and port numbers:
+
+tcpdump -n src host 192.168.1.1
+
+Capture any packets where the source or destination host is 192.168.1.1. Display IP addresses and port numbers:
+
+tcpdump -n host 192.168.1.1
+
+Capture any packets where the destination network is 192.168.1.0/24. Display IP addresses and port numbers:
+
+tcpdump -n dst net 192.168.1.0/24
+
+Capture any packets where the source network is 192.168.1.0/24. Display IP addresses and port numbers:
+
+tcpdump -n src net 192.168.1.0/24
+
+Capture any packets where the source or destination network is 192.168.1.0/24. Display IP addresses and port numbers:
+
+tcpdump -n net 192.168.1.0/24
+
+Capture any packets where the destination port is 23. Display IP addresses and port numbers:
+
+tcpdump -n dst port 23
+
+Capture any packets where the destination port is is between 1 and 1023 inclusive. Display IP addresses and port numbers:
+
+tcpdump -n dst portrange 1-1023
+
+Capture only TCP packets where the destination port is is between 1 and 1023 inclusive. Display IP addresses and port numbers:
+
+tcpdump -n tcp dst portrange 1-1023
+
+Capture only UDP packets where the destination port is is between 1 and 1023 inclusive. Display IP addresses and port numbers:
+
+tcpdump -n udp dst portrange 1-1023
+
+Capture any packets with destination IP 192.168.1.1 and destination port 23. Display IP addresses and port numbers:
+
+tcpdump -n "dst host 192.168.1.1 and dst port 23"
+
+Capture any packets with destination IP 192.168.1.1 and destination port 80 or 443. Display IP addresses and port numbers:
+
+tcpdump -n "dst host 192.168.1.1 and (dst port 80 or dst port 443)"
