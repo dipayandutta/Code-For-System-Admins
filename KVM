@@ -1,0 +1,7 @@
+apt-get install virtinst
+apt-get install libvirt-bin
+apt-get install qemu-utils
+apt-get install virt-viewer
+systemctl status libvirt-bin.service
+apt-get install gir1.2-spice-client-gtk-3.0
+apt-get install spice-vdagent
