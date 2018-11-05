@@ -1,0 +1,5 @@
+####------------------------------------------------------------------------------------------#####
+      RUN THIS COMMAND TO INSTALL WXPYTHON IN WINDOWS 10 MACHINE
+####-------------------------------------------------------------------------------------------#########
+
+pip.exe install --upgrade --pre -f https://wxpython.org/Phoenix/snapshot-builds/ wxPython
