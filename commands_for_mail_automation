@@ -1,0 +1,19 @@
+lastname=$(ls -td -- */ | head -n 1 | cut -d'/' -f1)
+currentDate=$(date +%Y%m%d)
+
+file="user_list"
+while IFS= read -r line
+do
+        # display $line or do somthing with $line
+        printf '%s\n' "$line"
+        zmbkpose -f $line
+	# change the directory to the backup directory
+	cd /opt/backup
+	# Check the current directory
+	pwd
+	# get the last directory name
+	lastName=$(ls -td -- */ | head -n 1 | cut -d'/' -f1)
+	# Transfer using scp
+	scp -r $lastName admin@192.168.99.121:/home/admin/dir
+done <"$file"
+
