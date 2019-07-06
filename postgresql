@@ -1,0 +1,133 @@
+list all database
+\l
+create a database
+++++++++++++++++++++++
+create database <database name>;
+
+connect to a database
+++++++++++++++++++++++++++++
+psql -h localhost -p <port number>-U <username> -d <database name>
+OR
+psql --host localhost --port 5432 --dbname test --username postgres
+
+OR
+inside database
+\c <database name>
+
+DROP database
+++++++++++++++++++++++++
+drop database <database name>
+
+List tables
++++++++++++++++++++++
+\d
+\d table_name
+
+create a table
+++++++++++++++++++++++
+create table person (
+id BIGSERIAL NOT NULL PRIMARY KEY,
+first_name VARCHAR(50) NOT NULL,
+last_name VARCHAR(50) NOT NULL,
+gender VARCHAR(7) NOT NULL,
+date_of_birth DATE NOT NULL,
+email VARCHAR(140) );
+
+Drop a table
+++++++++++++++++++++++
+drop table <table_name>
+
+Insert into table
++++++++++++++++++++++++
+INSERT INTO person(first_name , last_name , gender ,date_of_birth) values ('Anne','Smith','FEMALE',date '1980-10-02');
+
+select table
++++++++++++++++++++
+select * from peron;
+
+execute command from a file
++++++++++++++++++++++++++++++++=
+\i FILENAME;
+
+Order By
+++++++++++++++++++
+select * from person order by country_of_birth;
+
+Order By Assending
+++++++++++++++++++++++++
+select * from person order by country_of_birth ASC;
+
+Order By Descending
++++++++++++++++++++++++++=
+select * from person order by country_of_birth ASC;
+
+Limit Result
+++++++++++++++++++++
+select * from person order by date_of_birth DESC LIMIT <number>;
+
+select country_of_birth from person order by first_name ASC limit 10;
+
+Distinct Result
+++++++++++++++++++++++
+select DISTINCT country_of_birth, FROM person order by country_of_birth ASC limit 10;
+
+And
+++++++++++
+select * from person where gender = 'Female' And (country_of_birth='China' OR country_of_birth='Poland');
+
+print column from 5 to 15
+++++++++++++++++++++++++++++
+select * from person OFFSET 5 limit 10;
+OR
+select * from person offset 5 fetch first 5 row only;
+
+start from row number 5 and then print to the last
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+select * from offset 5;
+
+select person from country China, France and Brasil
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+select * from person where country_of_birth='China' OR country_of_birth = 'France' OR country_of_birth='Brasil';
+
+IN
+++++++++++++++++++
+in keyword take an array of values and return the queries
+select * from person where country_of_birth in ('China','Brasil','France');
+
+BETWEEN
+++++++++++++++++++
+select * from table person where data of birth is in between 2018 - 2019
+select * from person where date_of_birth between date '2018-01-01' and '2019-01-01';
+
+
+LIKE and iLIKE
+++++++++++++++++++++++++=
+like - select all the email IDs with .com domain
+select * from person where email LIKE '%.com';
+select * from person where email LIKE '%@cnet.com';
+
+
+GROUP BY
+++++++++++++++++++
+select total number of person from each country of birth
+select country_of_birth, count(*) from person GROUP BY country_of_birth;
+select country_of_birth, count(*) from person GROUP BY country_of_birth order by country_of_birth ASC;
+
+
+GROUP BY HAVING
+++++++++++++++++++++
+select all the countries which atleast have greater than 05 people
+select country_of_birth ,count(*) from person group by country_of_birth having count(*) > 5 order by country_of_birth ASC;
+
+
+max
+++++++++++++
+select max(price) from car;
+
+avg
+++++++++++++++++++
+select avg(price) from car;
+
+round
+++++++++++++++++++++
+select round(avg(price)) from car;
