@@ -20,3 +20,24 @@ you will see that the Zimbra DnsCahe service is in a stopped state. To fix this 
 # zmprov ms `zmhostname` -zimbraServiceEnabled dnscache
 # zmprov ms `zmhostname` -zimbraServiceInstalled dnscache
 # zmcontrol status
+
+
+Disable antispam service
+# su - zimbra
+Syntax:
+command option "zimbra_hostname" attribute service_name
+Example:
+$ zmprov ms "mail.example.com" -zimbraServiceEnabled antispam
+or,
+$ zmprov ms `zmhostname` -zimbraServiceEnabled antispam
+
+Enable antispam service
+$ zmprov ms "mail.example.com" +zimbraServiceEnabled antispam
+or,
+$ zmprov ms `zmhostname` +zimbraServiceEnabled antispam
+
+Disable Antivirus service
+$ zmprov ms `zmhostname` -zimbraServiceEnabled antivirus
+
+Enable Antivirus service
+$ zmprov ms `zmhostname` +zimbraServiceEnabled antivirus
