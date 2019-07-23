@@ -337,7 +337,7 @@ Remove a dangling image
 
 $ docker rmi $(docker images -q --filter "dangling=true")
 
-
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 
 Dockerfile steps
 ===========================
