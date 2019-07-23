@@ -100,6 +100,11 @@ To run a container
 $ docker run -i -t <image_name"ubuntu:14:04"> /bin/bash
 
 
+To run docker a delete the container
+========================================
+docker run --rm ubuntu ls 
+
+
 Run Docker in Detached mode
 ==============================
 
@@ -126,6 +131,52 @@ Remove all Suspended Containers
 $ docker rm $(docker ps -a -q)
 
 
+Docker ssh Start and connection
+======================================
+1  ls -ltr
+    2  apt-get update
+    3  apt-get  install openssh-server
+    4  ls -ltr /var/run
+    5  mkdir /var/run/sshd
+    6  ls -ltr /var/run
+    7  cd /var/run/sshd
+    8  ls -ltr
+    9  cd ..
+   10  ls -ltr
+   11  cd ~
+   12  chmod 0755 /var/run/sshd
+   13  ls -ltr
+   14  /usr/sbin/sshd
+   15  useradd --create-home -shell /bin/bash --groups sudo dipayan
+   16  useradd --create-home --shell /bin/bash --groups sudo dipayan
+   17  passwd dipayan
+   18  cat /etc/passwd | grep dipayan
+   19  apt-get install sudo
+
+
+
+Docker remove all stop containers
+========================================
+docker container ls -a --filter status=exited --filter status=created
+docker container prune
+
+
+delete all container
+=========================
+docker ps -aq | xargs docker rm -f
+
+Stop and remove all containers
+=======================================
+docker container stop $(docker container ls -aq)
+
+
+attach to a container
+-==========================
+docker attach 665b4a1e17b6 #by ID
+or
+$ sudo docker attach loving_heisenberg #by Name
+
+docker exec -it <containerIdOrName> bash
 
 Sharing host data with a container
 =====================================
