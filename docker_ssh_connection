@@ -45,3 +45,16 @@ ssh configuration inside a container
    ==========================================
    ssh dipayan@localhost -p 2210
    
+   
+   Install and commit changes to create a new docker image
+   ============================================================
+   docker commit -m "Modified" docker_server_ssh docker_mod
+   syntax
+   docker commit -m "Some Commit Message" <container name> <new image name>
+   
+   Now run the new image
+   ===========================
+   docker run --name dipayan_server -i -t -d -p 2213:22 docker_mod
+   
+   ssh dipayan@localhost -p 2213
+   
