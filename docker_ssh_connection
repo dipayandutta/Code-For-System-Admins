@@ -1,0 +1,47 @@
+start the container in deattachment mode
+==========================================
+docker run --name ssh_connection -d -i -t ubuntu
+
+now attach to the newly created container
+===========================================
+docker attach `docker ps -lq`
+
+
+ssh configuration inside a container
+====================================
+    1  ls -ltr
+    2  apt-get update
+    3  apt-get  install openssh-server
+    4  ls -ltr /var/run
+    5  mkdir /var/run/sshd
+    6  ls -ltr /var/run
+    7  cd /var/run/sshd
+    8  ls -ltr
+    9  cd ..
+   10  ls -ltr
+   11  cd ~
+   12  chmod 0755 /var/run/sshd
+   13  ls -ltr
+   14  /usr/sbin/sshd
+   15  useradd --create-home --shell /bin/bash --groups sudo dipayan
+   16  passwd dipayan
+   17  cat /etc/passwd | grep dipayan
+   18  apt-get install sudo
+   
+   Now Check The DIFFERENCES
+   =============================
+   docker diff `docker ps -lq` | less
+   
+   commit the changes of the container
+   ==========================================
+   docker commit `docker ps -lq` ubuntu_ssh_coonection
+   
+   start the container
+   ===========================
+   
+ docker run -d -p 2211:22 ubuntu_ssh_coonection /usr/sbin/sshd -D
+   
+   ssh to the newly created container
+   ==========================================
+   ssh dipayan@localhost -p 2210
+   
