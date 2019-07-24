@@ -1,0 +1,13 @@
+FROM ubuntu
+
+MAINTAINER Dipayn Dutta inbox.dipayan@gmail.com
+
+RUN apt-get update && apt-get install -y openssh-server && apt-get install -y vim
+
+RUN mkdir -p /var/run/sshd
+
+RUN chmod 0755 /var/run/sshd
+
+RUN /usr/sbin/sshd
+
+ADD sshd_config /etc/ssh/sshd_config
