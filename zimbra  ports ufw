@@ -1,0 +1,14 @@
+nano /etc/ufw/applications.d/zimbra
+
+[Zimbra]
+
+title=Zimbra Collaboration Server
+
+description=Open source server for email, contacts, calendar, and more.
+
+ports=25,80,110,143,443,465,587,993,995,3443,5222,5223,7071,9071/tcp
+
+
+ufw allow Zimbra
+ufw enable
+ufw status
