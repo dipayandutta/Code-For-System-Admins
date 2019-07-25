@@ -169,6 +169,17 @@ Stop and remove all containers
 =======================================
 docker container stop $(docker container ls -aq)
 
+volume mounting
+===========================
+docker run --rm -it -v $(pwd):/mnt dipayandutta/mysql_test bash
+
+docker run -it -v /home/dipayan/code/ ubuntu bash
+
+docker links
+=================================
+docker run -d --name=redis redis
+docker run --rm -it --link redis:db ubuntu bash
+
 
 attach to a container
 -==========================
