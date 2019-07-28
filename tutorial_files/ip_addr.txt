@@ -1,0 +1,115 @@
+ Checking network information for interfaces 
+
+# ip addr show 
+
+# ip addr show enp0s3
+
+Enabling & disabling a network interface
+
+# ip link set enp0s3 up
+
+# ip link set enp0s3 down
+
+Assigning IP address & other network information to an interface
+
+# ip addr add 192.168.0.50/255.255.255.0 dev enp0s3
+# ip addr add broadcast 192.168.0.255 dev enp0s3
+# ip addr add broadcast 192.168.0.255 dev enp0s3
+
+
+standarad broadcast address along with IP address 
+# ip addr add 192.168.0.10/24 brd + dev enp0s3
+
+Removing IP address from interface
+# ip addr del 192.168.0.10/24 dev enp0s3
+
+Adding an Alias for an  interface (enp0s3)
+
+# ip addr add 192.168.0.20/24 dev enp0s3 label enp0s3:1
+
+
+Checking route or default gateway information
+
+# ip route show
+
+Adding a static route 
+
+# ip route add default via 192.168.0.150/24
+
+For changing the default route for a single interface & to make change route further, execute
+# ip route add 172.16.32.32 via 192.168.0.150/24 dev enp0s3
+
+Removeing a static route
+
+# ip route del 192.168.0.150/24
+
+
+To make a persistence route change, we need to modify / create route-enp0s3 file . Add the following line  to it, demonstration is shown below
+
+vi /etc/sysconfig/network-scripts/route-enp0s3
+
+172.16.32.32 via 192.168.0.150/24 dev enp0s3
+
+
+If you are using Ubuntu or debian based OS, than the location of the file is ‘/etc/network/interfaces‘ and  add the line “ip route add 172.16.32.32 via 192.168.0.150/24 dev enp0s3” to the bottom of the file.
+
+
+[*] To view entries in ARP cache i.e. MAC addresses of the devices connected in LAN, the IP command used is
+
+# ip neigh 
+
+
+[*] To delete an ARP entry, the command used is
+
+ip neigh del 192.168.0.106 dev enp0s3
+
+[*] To add a new entry to the ARP cache 
+#  ip neigh add 192.168.0.150 lladdr 33:1g:75:37:r3:84 dev enp0s3 nud perm
+
+where nud menas neighbour state , it can be 
+
+
+    perm – permanent & can only be removed by administrator,
+    noarp – entry is valid but can be removed after lifetime expires,
+    stale – entry is valid but suspicious,
+    reachable – entry is valid until timeout expires.
+
+
+[*] Checking network statistics 
+
+# ip -s link 
+
+
+[*] set MTU 
+ip link set enp0s3 mtu 9600 
+
+
+[*] check the status of the network devices 
+# nmcli -p dev 
+
+[*] Sample static IP configuration 
+
+	CENTOS 
+	-------
+	File location ==> /etc/sysconfig/network-scripts/ifcfg-eth0
+
+DEVICE=eth0
+BOOTPROTO=static
+DHCPCLASS=
+HWADDR=00:30:48:56:A6:2E
+IPADDR=192.168.1.10
+NETMASK=255.255.255.0
+ONBOOT=yes
+
+	Debian/Ubuntu
+	--------------
+	file location ==> /etc/network/interfaces
+
+iface eth0 inet static
+     address 192.168.1.10
+     network 192.168.1.0
+     netmask 255.255.255.0
+     broadcast 192.168.1.255
+     gateway 192.168.1.254
+
+

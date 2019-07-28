@@ -1,0 +1,15 @@
+                        
+                            Solving inode issue
+                            ====================
+                            
+# df --inodes /var/
+
+
+Check which files are consuming more
+
+du --inodes -d 3 /var/ | sort -n | tail
+
+
+delete some of them
+
+cd /var/lib/docker/aufs/diff

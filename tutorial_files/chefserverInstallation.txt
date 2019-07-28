@@ -1,0 +1,243 @@
+Before starting the installation process of Chef-Server , chef-workstation and chef-client please make sure each machine can communicate with other .
+
+Add all host entry for each machine in each machines /etc/hosts
+
+
+Chef Server Installation
+==============================
+
+ sudo apt-get update
+ sudo vim /etc/hosts
+ 172.28.128.10   chefserver
+172.28.128.11   chefworkstation
+172.28.128.12   chefclient
+172.28.128.13    clientmachine
+
+Create a directory to download the chef package
+ mkdir server
+Change to the directory
+ cd server/
+Now install the chef server package
+ scp dipayan@10.0.1.111:/home/dipayan/chef-server-core_12.17.15-1_amd64.deb .
+ sudo dpkg -i chef-server-core_12.17.15-1_amd64.deb
+Re configure the Package
+ sudo chef-server-ctl reconfigure
+Check the Status of The Server
+ sudo chef-server-ctl status
+Now install the chef-server GUI and reconfigure again
+ sudo chef-server-ctl install chef-manage
+ sudo chef-server-ctl reconfigure
+ sudo chef-manage-ctl reconfigure
+
+Create a User 
+User Name: dipayan
+First Name: Dipayan
+Last Name: Dutta
+Email: dipayan@capitalnumbers.com
+Password: password
+File Name: dipayan.pem
+Path: /etc/chef
+
+ sudo chef-server-ctl user-create dipayan Dipayan Dutta dipayan@capitalnumbers.com password -f /etc/chef/dipayan.pem
+
+Syntax =
+
+chef-server-ctl user-create USER_NAME FIRST_NAME LAST_NAME EMAIL 'PASSWORD' -f PATH_FILE_NAME
+
+Now create an Organisation
+
+ sudo chef-server-ctl org-create cn "Capital Numbers" --association_user dipayan -f /etc/chef/capitalnumbers-validator.pem
+
+
+Short Name: cn
+Full Organization Name: Capital Numbers
+Association User: dipayan
+Filename: capitalnumbers-validator.pem
+Path:  /etc/chef
+
+Syntax 
+
+chef-server-ctl org-create short_name 'full_organization_name' --association_user user_name --filename ORGANIZATION-validator.pem
+
+[*]NOTE[*] - now ls /etc/chef , 
+
+This will show dipayan.pem and capitalnumbers-validator.pem in this directory 
+
+Both Those .pem file is need to transfer in workstation 
+ scp capitalnumbers-validator.pem vagrant@chefworkstation:/home/vagrant/chef-repo/.chef
+ scp dipayan.pem vagrant@chefworkstation:/home/vagrant/chef-repo/.chef
+
+
+
+
+
+
+
+
+
+
+Chef Workstation Installation
+=================================
+
+
+sudo apt-get update
+
+sudo vim /etc/hosts
+ 172.28.128.10   chefserver
+172.28.128.11   chefworkstation
+172.28.128.12   chefclient
+172.28.128.13    clientmachine
+
+Check the network avaliability
+ping chefserver
+ping chefclient
+
+Download and install Chef DK
+
+scp dipayan@10.0.1.111:/home/dipayan/chefdk_2.4.17-1_amd64.deb .
+
+sudo dpkg -i chefdk_2.4.17-1_amd64.deb
+
+Verify The installation
+ sudo chef verify
+
+Some of the users may want to set Ruby version default to Ruby version installed with Chef. Check the current Ruby location.
+
+which ruby (if this command shows no output follow the below steps)
+
+echo 'eval "$(chef shell-init bash)"' >> ~/.bash_profile
+
+. ~/.bash_profile
+
+which ruby (Now this will show the o/p-  /opt/chefdk/embedded/bin/ruby)
+
+sudo apt-get install git
+
+Generate the Chef repo
+
+chef generate repo chef-repo
+
+Create a hidden directory under the chef-repo directory
+ mkdir -p ~/chef-repo/.chef
+
+Knife is a command line interface for between a local chef-repo and the Chef server. To make the knife to work with your chef environment, we need to configure it by creating knife.rb in the “~/chef-repo/.chef/” directory.
+
+vim knife.rb
+
+current_dir = File.dirname(__FILE__)
+log_level                :info
+log_location             STDOUT
+node_name                "dipayan"
+client_key               "#{current_dir}/dipayan.pem"
+validation_client_name   "cn-validator"
+validation_key           "#{current_dir}/capitalnumbers-validator.pem"
+chef_server_url          "https://chefserver/organizations/cn"
+syntax_check_cache_path  "#{ENV['HOME']}/.chef/syntaxcache"
+cookbook_path            ["#{current_dir}/../cookbooks"]
+
+
+node_name: This the username with permission to authenticate to the Chef server. Username should match with the user that we created on the Chef server.
+client_key: The location of the file that contains user key that we copied over from the Chef server.
+validation_client_name: This should be your organization’s short name followed by -validator.
+validation_key: The location of the file that contains validation key that we copied over from the Chef server. This key is used when a chef-client is registered with the Chef server.
+chef_server_url: The URL of the Chef server. It should begin with https://, followed by IP address or FQDN of Chef server, organization name at the end just after /organizations/.
+{current_dir} represents ~/chef-repo/.chef/ directory, assuming that knife.rb file is in ~/chef-repo/.chef/. So you don’t have to write the fully qualified path.
+
+
+Check the client list
+knife client list
+(This will generate an error as i did not fetch the ssl certificate)
+
+Fetch the ssl certificate
+knife ssl fetch (This will create a trusted_dirs in .chef directory)
+
+
+Check the Client list
+knife client list
+
+Bootstrap a client
+knife bootstrap chefclient -x vagrant -P cn123 --sudo
+
+Client hostname = chefcleint
+-x username
+-P password 
+--sudo -> giving sudo privilage
+
+Now check the registered node
+
+knife node list
+
+
+
+
+
+Create a cookbook
+
+Create the cookbook inside the chef-repo/cookbooks directory
+
+chef generate cookbook application
+
+Chef generate cookbook apache_install
+
+Cd apache_install/recipes
+
+vim default.rb
+
+execute "update-upgrade" do
+    command "apt-get update && apt-get upgrade -y"
+    action :run
+End
+
+Now uploda the cookbook
+
+knife upload cookbooks apache_install 
+
+
+
+Add Cookbook To the runlist
+
+vagrant@chefworkstation:~/chef-repo/cookbooks$ knife node run_list add chefclient recipe[update-upgrade]
+
+Here chefclient is the client machines name
+
+
+Run the update
+ Login to the client machine
+
+And run 
+
+Sudo chef-client
+
+
+Running multiple recipes
+
+/chef-repo/cookbooks$ ls lamp-stack/recipes/
+
+knife node run_list add chefclient "recipe[lamp-stack::apache]"
+
+
+
+Chef command to generate index.html file 
+
+chef generate file index.html
+
+This command will create index.html file under the files directory 
+
+
+A sample apache installation and configuration example
+
+package "apache2" do
+    action :install
+end
+
+service "apache2" do
+    action [:enable,:start]
+end
+
+cookbook_file "/var/www/html/index.html" do
+    source "index.html"
+    mode "0644"
+end
+
+
+

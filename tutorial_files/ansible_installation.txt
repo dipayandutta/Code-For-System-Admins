@@ -1,0 +1,157 @@
+				Ansible Installation
+				---------------------
+
+ssh-keygen -t rsa
+ssh-copy-id root@172.28.128.21
+ssh-copy-id root@172.28.128.22
+
+apt-get update
+apt-get install libffi-dev python-dev libssl-dev
+apt-get install build essential
+
+apt-get install ansible
+ansible --version
+
+vim /etc/ansible/ansible.cfg
+# uncomment this to disable SSH key host checking
+host_key_checking = False
+
+cd /etc/ansible
+vim hosts
+[clientone]
+172.28.128.21
+
+[clienttwo]
+172.28.128.22
+
+ansible all -m ping -u root
+ansible -m shell -a 'free -m' clientone
+ansible -m shell -a 'uptime' clienttwo
+
+
+
+command example
+-----------------
+
+ansible all -m ping -s -k -u vagrant
+
+Let's cover these commands:
+
+    all - Use all defined servers from the inventory file
+    -m ping - Use the "ping" module, which simply runs the ping command and returns the results
+    -s - Use "sudo" to run the commands
+    -k - Ask for a password rather than use key-based authentication
+    -u vagrant - Log into servers using user vagrant
+
+
+Running sudo apt-get install nginx 
+===================================
+
+ansible all -s -m shell -a 'apt-get install nginx'
+
+
+installing git using ansible way
+------------------------------------
+ansible all -s -m apt -a 'pkg=git state=installed update_cache=true'
+
+
+install python-pip in a particular node
+=========================================
+ansible clientone -s -m apt -a 'pkg=python-pip state=installed update_cache=true'
+
+
+
+Roles Example
+-----------------
+
+site.yml – starting point of our ansible playbook
+hosts – carrying hosts information
+roles/ - defining what each type of server has to perform
+       webservers/
+              tasks/ - tasks performed on webservers
+                     main.yml
+              handlers/ - running tasks under particular events
+                     main.yml
+              templates/ - configuration files which can reference variables
+                     index.html.j2
+              files/ - files to be copied to webservers
+                     cloud.png
+
+
+Directory Structure
+----------------------
+
+├── file.txt
+├── hosts
+├── roles
+│   └── clientone
+│       ├── files
+│       │   └── file.txt
+│       ├── handlers
+│       │   └── main.yml
+│       ├── tasks
+│       │   └── main.yml
+│       └── templates
+│           └── index.html.j2
+└── site.yml
+
+
+inside the hosts file
+--------------------
+[clientone]
+172.28.128.21
+
+
+cat site.yml 
+---
+- name: install and configure webserver
+  hosts: clientone
+  remote_user: root
+  sudo:	no
+  roles:
+    - clientone
+
+
+/tasks# cat main.yml 
+---
+# This task installs and enables apache on client one
+
+- name: ensure apache is installed
+  apt: pkg=apache2 state=latest
+
+- name: ensure apache in running
+  service: name=apache2 state=running enabled=yes
+
+- name: copy files to the document root
+  copy: src=file.txt dest=/var/www/html/file.txt
+
+- name: copy application code to document root
+  template: src=index.html.j2 dest=/var/www/html/index.html
+
+  notify: restart apache2
+
+
+
+/handlers# cat main.yml 
+---
+- name: restart apache2
+  service: name=apache2 state=restarted
+
+
+/templates# cat index.html.j2 
+<html>
+<head>
+    <title>CloudAcademy Ansible Demo</title>
+</head>
+<body>
+    <h1>
+        Thank you for reading this post. 
+        My IP Address is {{ ansible_eth0.ipv4.address }}
+    </h1>
+    <br/><br/><br/>
+    <p>
+       This is a sample page created using ansible
+    </p>
+</body>
+</html>
+

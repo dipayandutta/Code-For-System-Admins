@@ -1,0 +1,42 @@
+fdisk /dev/vdb
+
+command (m for help): n
+Partion type :
+select : p
+Partition number : 1
+size + 256M
+command (m for help): t
+Hex Code : 8e [8e for linux LVM partition]
+command (m for help): w
+# partprobe
+
+===Create the physical volume =====
+pvcreate /dev/vdb1 /dev/vdb2
+
+-----Create the volume group----
+vgcreate <vgname> /dev/vdb1 /dev/vdb2
+
+----Create the logical volume from the volume group ----
+lvcreate -n <name of the lvm> -L 400M <vgname>
+
+----The device will created in ---
+/dev/<vgname>/<lvname>
+
+---Add a persistent file system ---
+mkfs -t xfs /dev/<vgname>/<lvname>
+
+mkdir /storage
+
+/etc/fstab
+/dev/<vgname>/<lvname> /storage xfs defaults 1 2 
+
+mount -a 
+
+===Extending a PV ====
+pvcreate /dev/vdb3
+
+====Extending a LVM ----
+lvextend -L +300M /dev/<vgname>/<lvname>
+
+===Extending the filesystem===
+xfs_growfs /storage
