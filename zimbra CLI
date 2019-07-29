@@ -1,0 +1,5 @@
+Zimbra CLI to create new file
+zmprov ca name@domain 'password' givenName 'ABC' sn 'XYZ' displayName 'ABC XYZ'
+
+Zimbra cli to export backup
+zmmailbox -z -m name@domain postRestURL "//?fmt=tgz&resolve=reset" name@domain.tgz
