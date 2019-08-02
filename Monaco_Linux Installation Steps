@@ -1,0 +1,3 @@
+Download it from https://github.com/hbin/top-programming-fonts/raw/master/Monaco-Linux.ttf
+    Copy the downloaded font into ~/.fonts/
+    Run sudo fc-cache -fv
