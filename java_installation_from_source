@@ -1,0 +1,24 @@
+JDK Installation Steps:
+cd /usr/lib/jvm
+sudo cp -r /home/dipayan/Downloads/jdk1.8.0_221/ .
+cd jdk1.8.0_221/
+sudo vim /etc/environment (Add This)
+
+/usr/lib/jvm/jdk1.8.0_221/bin
+/usr/lib/jvm/jdk1.8.0_221/jre/bin
+J2SDKDIR="/usr/lib/jvm/jdk1.8.0_221"
+J2REDIR="/usr/lib/jvm/jdk1.8.0_221/jre"
+JAVA_HOME="/usr/lib/jvm/jdk1.8.0_221"
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/jdk1.8.0_221/bin:/usr/lib/jvm/jdk1.8.0_221/jre/bin"
+
+sudo update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/jdk1.8.0_221/bin/java" 0
+
+sudo update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/jdk1.8.0_221/bin/javac" 0
+
+sudo update-alternatives --set java /usr/lib/jvm/jdk1.8.0_221/bin/java
+
+sudo update-alternatives --set javac /usr/lib/jvm/jdk1.8.0_221/bin/javac
+
+update-alternatives --list java
+
+update-alternatives --list javac
