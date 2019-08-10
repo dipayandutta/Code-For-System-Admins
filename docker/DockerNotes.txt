@@ -358,6 +358,13 @@ Dockerfile steps
 3. create a Dockerfile
 
 
+
+Docker volume Creation
+==========================
+docker volume create <volume Name>
+
+docker run --name <container name> --volume <voluname> -d -p ****:**** -p *****:***** <docker image name>
+
 Docker Dangling Volumes
 ============================
 $ docker volume ls -qf dangling=true
