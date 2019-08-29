@@ -1,0 +1,6 @@
+zypper refresh
+zypper update
+
+To install build-essential or Development Tools similar in SUSE 
+
+zypper install -t pattern devel_C_C++
