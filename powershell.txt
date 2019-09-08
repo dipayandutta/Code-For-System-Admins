@@ -1,0 +1,25 @@
+List Items in a Diretory on their last Accesstime in Descending Order
+==================================================================
+>dir | Sort-Object -Descending -Property LastWriteTime
+
+
+List all Items using ForEach loop with their full File Name and Information
+===========================================================================
+>dir | foreach {"$($_.GetType().FullName)   -  $_.name"}
+
+GET list of process
+======================
+ Get-Process (verb-Noun Pair)
+
+GET all the services
+=========================
+ Get-Service
+
+Chek PowerShell Version
+=============================
+$PSVersionTable
+
+
+Drive Details
+=======================
+ Get-PSDrive
