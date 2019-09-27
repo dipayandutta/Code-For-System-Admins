@@ -1,0 +1,68 @@
+./prometheus --config.file=prometheus.yml &
+
+Prometheus Query
+========================
+promiohttp_metric_handler_request_total
+count(promiohttp_metric_handler_request_total)
+rate(promiohttp_metric_handler_request_total(code="200")[1m])
+
+process_cpu_seconds_total
+
+
+Adding node exporter
+========================
+ps -ef | grep pro
+
+get the process ID 
+and Then Kill the process before modifiying the promethus.yml file 
+
+Now open the prometheus.yml file and start editing
+==============================================
+
+(The Default One)
+scrape_configs:
+	- job_name: 'prometheus'
+	  static_configs:
+	  - targets: ['localhost':9090]
+
+(Change This to)
+scrape_configs:
+	- job_name: 'node'
+	  static_configs:
+	  - targets: ['localhost':9100]  ## # Change port number to 9100 for node exporter to communicate
+	  ### To add new targets
+	  - targets:['192.168.x.y:9100']
+	  - targets:['192.168.x.y:9100']
+
+localhost:9090/graph
+
+node_cpu_seconds_total and node_exporter_build_info
+
+tate(node_cpu_seconds_total{mode="system"}[1m])
+node_filesystem_avail_bytes
+
+
+To Start Grafan Server web
+============================
+./bin/grafana-server web &
+
+Default grafana port 3000
+localhost:3000
+username:-admin
+password:-admin
+(It will ask to change the password at first login using default credentials)
+
+After Login
+Create Data Source
+Select Prometheus
+URL:- localhost:9090
+
+Then Create DashBoard
+[ https://grafana.com/dashboards/405
+  https://grafana.com/dashboards/1860
+  https://grafana.com/dashboards/5174
+  https://grafana.com/dashboards/9096
+]
+
+Create Dashboard --> Import --> ID(5174)
+localhost --> Prometheus --> Import 
