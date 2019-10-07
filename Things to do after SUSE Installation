@@ -1,1 +1,2 @@
 https://www.tecmint.com/things-to-do-after-installing-opensuse-leap-15/
+sudo zypper install gtk2-devel
