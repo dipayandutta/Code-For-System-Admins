@@ -1,0 +1,1 @@
+docker run --privileged=true -v /root/web:/usr/local/apache2/htdocs -dit -p 8080:80 --name test_httpd_volume httpd
