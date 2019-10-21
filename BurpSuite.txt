@@ -1,0 +1,19 @@
+========================
++++Burp Suite Setup+++
+========================
+
+Open Firefox ===> Preferences -==> Network Proxy ==> Manual Proxy 
+HTTP Proxy 127.0.0.1 Port 8080
+
+Now open Burp Suite 
+On the Proxy TAB 
+Go to the Options 
+Proxy Listner Make Sure Running is checked with 127.0.0.1 Configuration 
+
+Now Go on the Intercept Tab 
+
+Intercept is On --> Click to ON The intercept
+
+Type URL on the browser 
+
+Forward --> Click on the button
