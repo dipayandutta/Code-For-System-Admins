@@ -3,3 +3,50 @@ nmap -Pn -vvv -sV -p 80
 
 # bypass windows IPsec filter using source port 88
 nmap -sS -v -v -Pn -g 88 172.25.0.14
+
+# Packet Trace using a single IP Address
+
+
+# Testing Source Routing
+nmap -vv -n -sS -Pn --ip-options "L 10.10.6.60" --reason 10.10.10.7
+
+
+# FTP Bounce Scan
+nmap -p 22,25,135 -Pn -v -b XXX.YY.111.2 scanme.nmap.org
+
+
+Firewall scanning details
+Port      Port type 	Details
+Blocked 	Closed port 	Most of the firewall ports should be in a closed state
+Filtered 	Filtered port 	A few ports may be filtered to restrict access of the running services to a few IP addresses
+Allowed 	Open port 	Very few ports should be in an open state. Whenever you find them, do not forget to probe further and close non-required ports
+
+-sS 	TCP SYN Scan
+-sT 	TCP Connect Scan
+-sF 	FIN Scan
+-sA 	ACK Scan
+-sW 	Window Scan
+-p 	Scan for TCP ports
+-sU 	Scan for UDP ports
+-r 	Do a sequential port scan (don’t randomise the ports)
+-F 	Fast scan, scans fewer ports
+-O 	Detect operating system
+-sV 	Version detection
+-sL 	List targets
+-PN 	Do a ‘ping scan’
+
+
+# SYN Scan
+nmap -PN -sS -f -vv -n -p1-1000 -T4 -max-rtt-timeout 15 -oNmapSYNScan.txt 117.X.X.X
+
+
+# Version Detection Scan
+nmap -PN -sV -vv -n -p775 -oNmapServiceDetection.txt 117.X.X.X
+
+
+# Firewall Scan From the inside network
+nmap -vv -sU -sT -p1-1000 -n -r -T4 -oNmapIPCopInternal.txt 192.168.1.1
+
+
+# Service detection Scan
+nmap -vv -p53,80,123,222,775,800 -sV -oNmapIPCopIntUDPServDet.txt 192.168.1.1
