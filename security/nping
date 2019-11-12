@@ -1,0 +1,18 @@
+Nping is a great tool for performing specific probes.
+
+“Nping is an open-source tool for network packet generation, response analysis and response time measurement.
+Nping allows users to generate network packets of a wide range of protocols, letting them tune virtually any
+field of the protocol headers.”
+
+
+Are ports 80,443 listening on scanme.nmap.org and google.com?
+
+$ nping -c 1 --tcp -p 80,443 scanme.nmap.org google.com
+
+Is UDP port 123 (NTPD) open on scanme.nmap.org?
+
+$ nping -c 1 --udp -p 123 scanme.nmap.org
+
+See if the echo server on scanme will respond..
+
+$ nping --echo-client "public" scanme.nmap.org
