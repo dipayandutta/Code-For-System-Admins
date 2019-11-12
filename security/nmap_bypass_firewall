@@ -1,0 +1,5 @@
+# If the output shows all the ports are filtered
+nmap -Pn -vvv -sV -p 80
+
+# bypass windows IPsec filter using source port 88
+nmap -sS -v -v -Pn -g 88 172.25.0.14
