@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		
+		<p id="PageHeading"> Register to get access <i class="fas fa-sign-in-alt"></i></p>
+		<hr>
+		{% if message %}
+		<p style="color:green">
+			{{ message }}
+		</p>
+		{% endif %}
+
+		{% if error %}
+			<p style="color:red">
+				{{ error }}
+			</p>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block signup %}
+	<form method="POST" action="{% url 'signup' %}">
+		{% csrf_token %}
+		username:
+		<br>
+		<input type="text" name="username" required>
+		<br>
+
+		password:
+		<br>
+		<input type="password" name="password1" required>
+		<br>
+
+		Confirm Password:
+		<br>
+		<input type="password" name="password2" required>
+		<br>
+
+		Email:
+		<br>
+		<input type="email" name="emailid" required>
+		<br>
+		<br>
+
+		<input class="btn btn-primary" type="submit" name="" value="signup">
+	</form>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% load static %}
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    
+    <title>{% block title %}
+    
+    {% endblock title %}</title>
+ 
+   <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <!--Adding mycss-->
+    <link href="{% static 'css/mycss.css' %}" rel="stylesheet">
+    <!-- Adding fontawsome-->
+     <link href="{% static 'css/all.css' %}" rel="stylesheet">
+     <link href="{% static 'css/fontawsome.min.css' %}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+   <!-- <link href="starter-template.css" rel="stylesheet">-->
+   
+  </head>
+
+  <body>
+    <!--including navbar-->
+    {% include "navbar.html" %}
+    <br/>
+    <br/>
+    <main role="main" class="container">
+
+      <div class="container">
+        {% block content  %}
+        
+        {% endblock content  %}
+      </div>
+
+      <br/>
+      <div class="container">
+        {% block signup %}
+        
+        {% endblock signup %}
+      </div>
+
+      <br/>
+      <div class="container">
+        {% block login %}
+        
+        {% endblock login %}
+      </div>
+
+      <div class="container">
+        {% block PageBody %}
+        
+        {% endblock PageBody %}
+      </div>
+      <br/>
+      <br/>
+    </main><!-- /.container -->
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <!--including footer-->
+    {% include "footer.html" %}
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'js/jquery.min.js' %}" ></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    
+  </body>
+</html>

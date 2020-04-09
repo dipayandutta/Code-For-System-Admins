@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+	<p id = "PageHeading">Login</p>
+	<hr>
+	{% if error %}
+		{{ error }}
+	{% endif%}
+{% endblock %}
+
+{% block login %}
+	<form method="POST" action="{% url 'login' %}">
+		
+		{% csrf_token %}
+		username:
+		<br>
+		<input type="text" name="username" required>
+		<br>
+		<br>
+
+		password:
+		<br>
+		<input type="password" name="password" required>
+		<br>
+		<br>
+
+		<input class="btn btn-primary" type="submit" name="" value="login">
+	</form>
+{% endblock %}

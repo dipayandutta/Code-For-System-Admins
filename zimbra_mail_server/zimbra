@@ -1,0 +1,43 @@
+https://imanudin.net/category/zimbra/
+
+Installation On CentOS - 6
+https://imanudin.net/2015/03/13/how-to-install-zimbra-8-6-on-centos-6-part-1/
+https://imanudin.net/2015/03/14/how-to-install-zimbra-8-6-on-centos-6-part-2/
+
+Installation On CentOS -7
+https://www.tecmint.com/install-zimbra-collaboration-suite-on-centos-rhel/
+https://www.unixmen.com/install-zimbra-collaboration-suite-8-6-0-centos-7/
+
+
+Removeing DNS Cache from zimbra service
+How to remove DNSCACHE from zimbra services.
+
+If you will get a prompt stating something like “Port conflict detected: 53 (zimbra-dnscache)” with a prompt to hit ENTER to continue,
+you can just hit enter and let the installation/upgrade run out. Once everything is running,
+you will see that the Zimbra DnsCahe service is in a stopped state. To fix this error, all you have to do is
+
+# zmcontrol status
+# zmprov ms `zmhostname` -zimbraServiceEnabled dnscache
+# zmprov ms `zmhostname` -zimbraServiceInstalled dnscache
+# zmcontrol status
+
+
+Disable antispam service
+# su - zimbra
+Syntax:
+command option "zimbra_hostname" attribute service_name
+Example:
+$ zmprov ms "mail.example.com" -zimbraServiceEnabled antispam
+or,
+$ zmprov ms `zmhostname` -zimbraServiceEnabled antispam
+
+Enable antispam service
+$ zmprov ms "mail.example.com" +zimbraServiceEnabled antispam
+or,
+$ zmprov ms `zmhostname` +zimbraServiceEnabled antispam
+
+Disable Antivirus service
+$ zmprov ms `zmhostname` -zimbraServiceEnabled antivirus
+
+Enable Antivirus service
+$ zmprov ms `zmhostname` +zimbraServiceEnabled antivirus

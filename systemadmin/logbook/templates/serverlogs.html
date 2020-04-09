@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block PageBody %}
+	<div class="container">
+		<div class="row">
+			<div class="col md-12">
+				<div class="jumbotron p-2">
+					<h3>Add Server Logs<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addmodal">Add New Log</button></h3>
+
+				<!--Addint Flash Messages-->
+				{% if message %}
+					<div class="alert alert-success alert-dismissable" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="close">
+							<span aria-hidden="true">X
+							</span>
+						</button>
+					{{ message }}
+					</div>
+				{% endif%}
+				<!--Show the Results -->
+				<table class="table table-hover table-dark">
+					<tr>
+						<th>Serial No.</th>
+						<th>Date</th>
+						<th>Author</th>
+						<th>Designation</th>
+						<th>Subject</th>
+						<th>Reported To</th>
+						<th>Instructed By</th>
+					</tr>
+					{% for data in logs %}
+					<tr>
+						<td>{{ data.SerialNumber }}</td>
+						<td>{{ data.CreatedAt }}</td>
+						<td>{{ data.Author }}</td>
+						<td>{{ data.Designation }}</td>
+						<td>{{ data.Subject }}</td>
+						<td>{{ data.ReportedTo }}</td>
+						<td>{{ data.InstructedBy }}</td>
+					</tr>
+					{% endfor %}
+				</table>
+				</div>
+				<div id="addmodal" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">Add New Log</h4>
+							</div>
+							<div class="modal-body">
+								
+								<form action="{% url 'create' %}">
+									
+									{% csrf_token %}
+									<div class="form-group">
+										<label>Author:</label>
+										<input type="text" class="form-control" name="author" required>
+									</div>
+									<div class="form-group">
+										<label>Designation:</label>
+										<input type="text" class="form-control" name="designation" required>
+									</div>
+									<div class="form-group">
+										<label>Subject:</label>
+										<input type="text" class="form-control" name="subject" required>
+									</div>
+
+									<div class="form-group">
+										<label>ReportedTo:</label>
+										<input type="text" class="form-control" name="reportedto" required>
+									</div>
+
+									<div class="form-group">
+										<label>InstructedBy</label>
+										<input type="text" class="form-control" name="instructedby" required>
+									</div>
+
+									<input class="btn btn-primary" type="submit" value="Add">
+								</form>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+	</div>
+{% endblock %}

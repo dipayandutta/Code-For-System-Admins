@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+
+{% block PageBody%}
+	<div class="container">
+		<div class="row">
+			<div class="col md-12">
+				<div class="jumbotron p-4">
+					<h2>Total Servers {{ total_servers }}
+						<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addserver">Add Server</button>
+					</h2>
+				</div>
+			</div>
+			<div class="container">
+			<table class="table table-hover table-dark">
+				<tr>
+					
+					<th>Creation Date</th>
+					<th>IP Address</th>
+					<th>Storage</th>
+					<th>Memory</th>
+					<th>Core</th>
+					<th>Allocated For</th>
+					<th>Order By</th>
+					<th>OS</th>
+					<th>License</th>
+					<th>Created By</th>
+					<th>Action For Modification</th>
+				</tr>
+				{% for server in servers %}
+					<tr>
+						
+						<td>{{ server.CreatedAt }}</td>
+						<td>{{ server.ipaddress }}</td>
+						<td>{{ server.hdd }}</td>
+						<td>{{ server.ram }}</td>
+						<td>{{ server.core }}</td>
+						<td>{{ server.allocatedFor }}</td>
+						<td>{{ server.creationOrder }}</td>
+						<td>{{ server.os }}</td>
+						<td>{{ server.License }}</td>
+						<td>{{ server.createdBy }}</td>
+						<td>
+							<a href="{% url 'updateservers' server.SerialNumber %}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#serveredit{{ server.SerialNumber }}">update</a>
+						</td>
+						<td>
+							<a href="{% url 'deleteserver' server.SerialNumber %}" class="btn btn-danger btn-xs" onclick="return confirm('Are you Sure to Delete?')">Delete</a>
+						</td>
+					</tr>
+					<!--Edit Server List Form -->
+					<div id="serveredit{{ server.SerialNumber }}" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Update for {{ server.ipaddress }}</h4>
+								</div>
+								<div class="modal-body">
+									<form action="{% url 'updateservers' server.SerialNumber %}">
+										{% csrf_token %}
+										<div class="form-group">
+											<label>IP Address:</label>
+											<input type="text" class="form-control" name="ipaddress" value="{{ server.ipaddress }}" required>
+										</div>
+										<div class="form-group">
+											<label>Storage:</label>
+											<input type="text" class="form-control" name="hdd" value="{{ server.hdd }}" required>
+										</div>
+										<div class="form-group">
+											<label>Memroy:</label>
+											<input type="text" class="form-control" name="ram" value="{{ server.ram }}" required>
+										</div>
+										<div class="form-group">
+											<label>Core:</label>
+											<input type="text" class="form-control" name="core" value="{{ server.core }}" required>
+										</div>
+										<div class="form-group">
+											<label>Allocated For:</label>
+											<input type="text" class="form-control" name="allocatedFor" value="{{ server.allocatedFor }}" required>
+										</div>
+										<div class="form-group">
+											<label>Order By:</label>
+											<input type="text" class="form-control" name="creationOrder" value="{{ server.creationOrder }}" required>
+										</div>
+										<div class="form-group">
+											<label>Select OS</label>
+											<br>
+											<select name="os">
+												
+												<option value="windows2008">Microsoft 2008</option>
+												<option value="windows2012">Microsoft 2012</option>
+												<option value="CentOS7">Cent OS 7</option>
+												<option value="CentOS6">Cent OS 6</option>
+												<option value="Ubuntu16">Ubuntu 16</option>
+												<option value="Ubuntu18">Ubuntu 18</option>
+												<option value="OracleLinux">Oracle Linux</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Select License Type</label>
+											<br>
+											<select name="license">
+												
+												<option value="paid">Microsoft Licensed Applied</option>
+												<option value="notpaid">Waiting For Microsoft License</option>
+												<option value="opensource">Open Source</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<label>Created By:</label>
+											<input type="text" class="form-control" name="createdBy" value="{{ server.createdBy }}" required>
+										</div>
+										<div class="form-group">
+											<button type="submit" class="btn btn-primary" >Update</button>
+										</div>
+									</form>
+									<!--Close the Modal Window-->
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</table>
+			</div>
+			<!--Pagination-->
+			<div class="container">
+			<div class="paginator">
+				{% if servers.has_previous %}
+					<a href="?page=1"><</a>
+					<a href="?page={{ servers.previous_page_number }}">Previous</a>
+				{% endif %}
+
+				{% for num in servers.paginator.page_range %}
+	            {% if server.number == num %}
+	                <strong>{{ num }} </strong>
+	            {% endif %}
+		        {% endfor %}
+		        {% if servers.has_next %}
+		            <a href="?page={{ servers.next_page_number }}">Next</a>
+		            <!--<a href="?page={{ servers.paginator.num_pages }}">></a>-->
+		        {% endif %}
+			</div>
+		</div>
+	
+	<!--Add Server List Form-->
+		<div id="addserver" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Server Configurations</h4>
+					</div>
+					<div class="modal-body">
+						<form action="{% url 'createserver' %}">
+							{% csrf_token %}
+							<div class="form-group">
+								<label>IP Address:</label>
+								<input type="text" class="form-control" name="ipaddress" required>
+							</div>
+							<div class="form-group">
+								<label>Storage</label>
+								<input type="text" class="form-control" name="hdd" required>
+							</div>
+							<div class="form-group">
+								<label>Memory:</label>
+								<input type="text" class="form-control" name="ram" required>
+							</div>
+							<div class="form-group">
+								<label>Core:</label>
+								<input type="text" class="form-control" name="core" required>
+							</div>
+							<div class="form-group">
+								<label>Allocated For:</label>
+								<input type="text" class="form-control" name="allocatedFor" required>
+							</div>
+							<div class="form-group">
+								<label>Ordered By:</label>
+								<input type="text" class="form-control" name="creationOrder" required>
+							</div>
+							<div class="form-group">
+								<label>Select OS</label>
+								<br>
+								<select name="os">
+									<option value="">---Please Chose The Installed OS</option>
+									<option value="windows2008">Microsoft 2008</option>
+									<option value="windows2012">Microsoft 2012</option>
+									<option value="CentOS7">Cent OS 7</option>
+									<option value="CentOS6">Cent OS 6</option>
+									<option value="Ubuntu16">Ubuntu 16</option>
+									<option value="Ubuntu18">Ubuntu 18</option>
+									<option value="OracleLinux">Oracle Linux</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Select License Type</label>
+								<br>
+								<select name="license">
+									<option value="">---Please Select License Type</option>
+									<option value="paid">Microsoft Licensed Applied</option>
+									<option value="notpaid">Waiting For Microsoft License</option>
+									<option value="opensource">Open Source</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Server Created By:</label>
+								<input type="text" class="form-control" name="createdBy" required>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary" >Add</button>
+							</div>
+						</form>
+					</div>
+					<!--Close the Modal Window-->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

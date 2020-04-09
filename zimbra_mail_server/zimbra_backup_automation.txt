@@ -1,0 +1,18 @@
+file="user_list"
+while IFS= read -r line
+do
+        # display $line or do somthing with $line
+        printf '%s\n' "$line"
+        zmbkpose -f $line
+        # change the directory to the backup directory
+        cd /opt/backup
+        # Check the current directory
+        pwd
+        # get the last directory name
+        lastName=$(ls -td -- */ | head -n 1 | cut -d'/' -f1)
+        echo $lastName
+        # Transfer using scp
+        scp -r $lastName admin@<ip_address_of_remote_server>:/home/admin/78_backup
+        # Delte the latest Directory after transfering
+        rm -rf $lastName
+done <"$file"
