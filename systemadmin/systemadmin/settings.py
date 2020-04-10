@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'account',
     'logbook',
     'serverlists',
+    'urllists',
 ]
 
 MIDDLEWARE = [

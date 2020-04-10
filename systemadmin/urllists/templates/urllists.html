@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block PageBody %}
+	<div class="container">
+		<div class="row">
+			<div class="col md-12">
+				<div class="jumbotron p-2">
+					<h3>Add Applications <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addapplication">Add New Applications</button></h3>
+				</div>
+				<table class="table table-hover table-dark">
+					<tr>
+						<th>Deptartment</th>
+						<th>Internal IP</th>
+						<th>External IP</th>
+						<th>Application Name</th>
+						<th>URL</th>
+					</tr>
+					{% for app in applications %}
+					<tr>
+						<td>{{ app.Dept }}</td>
+						<td>{{ app.internalIP }}</td>
+						<td>{{ app.externalIP }}</td>
+						<td>{{ app.appName }}</td>
+						<td><a href="{{ app.appURL }}">{{ app.appURL }}</a></td>
+					</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<div id="addapplication" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h4 class="modal-title">Add Application Details</h4>
+					</div>
+					<div class="modal-body">
+						<form action="{% url 'addApps' %}">
+							
+							{% csrf_token %}
+							<div class="form-group">
+								<label>Department:</label>
+								<input type="text"  class="form-control" name="dept" required>
+							</div>
+
+							<div class="form-group">
+								<label>Internal IP</label>
+								<input type="text"  class="form-control" name="internalIP" required>
+							</div>
+
+							<div class="form-group">
+								<label>External IP</label>
+								<input type="text"  class="form-control" name="externalIP" required>
+							</div>
+
+							<div class="form-group">
+								<label>Application Name</label>
+								<input type="text"  class="form-control" name="applicationName" required>
+							</div>
+
+							<div class="form-group">
+								<label>Application URL</label>
+								<input type="text"  class="form-control" name="appURL" required>
+							</div>
+							<input class="btn btn-primary" type="submit" name="" value="Add">
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

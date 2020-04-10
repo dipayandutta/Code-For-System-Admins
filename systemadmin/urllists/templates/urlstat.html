@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}
+	{{ title }}
+{% endblock %}
+
+{% block PageBody %}
+	<table class="table table-hover table-dark">
+		<tr>
+			<th>URL</th>
+			<th>STATUS</th>
+		</tr>
+		{% for url,code in result_dict.items %}
+		
+			<tr>
+				<td>{{ url }}</td>
+				{% if code == 200 %}
+				<td style="color:green">ACTIVE</td>
+				{% else %}
+				<td style="color: red">DOWN</td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock%}

@@ -11,7 +11,7 @@ def index(request):
 	title = 'index'
 	return render(request,template,{'title':title})
 '''
-@login_required
+@login_required(login_url='/login/')
 def home(request):
 
 	total_blade_storage = 10,240

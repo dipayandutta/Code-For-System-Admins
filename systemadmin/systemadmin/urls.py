@@ -23,6 +23,7 @@ urlpatterns = [
     path('',include('account.urls')),
     path('logpage/',include('logbook.urls')),
     path('serverlists/',include('serverlists.urls')),
+    path('urllists/',include('urllists.urls')),
 ]
 
 if settings.DEBUG:
