@@ -7,7 +7,129 @@
 {% block content %}
 	<p>Hello World !</p>
 	<br>
-	<p>Happy Coding</p>
+	
 
 	<p>{{ request.user }}</p>
+	<div class="card">
+			  <div class="card-body">
+			    Total Storage Available {{ total_blade_storage }} GB
+			  </div>
+	</div>
+	<br>
+	<br>
+	<br>
+
+	<div class="container-fluid mt-4">
+		<div class="row justify-content-center">
+			
+			<div class="col-auto mb-3">
+				<div clas="card-deck">
+					<div class="card text-white bg-dark mb-4" style="max-width: 18rem;">
+				  
+					  <div class="card-header">Server Count </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Total Number Of Servers</h5>
+					    <h3 class="card-text">{{ total_servers }}</h3>
+					</div>
+					  
+				  </div>
+				</div>
+			</div>
+
+			<!---->
+			<div class="col-auto mb-3">
+				<div clas="card-deck">
+					<div class="card text-white bg-primary mb-4" style="max-width: 18rem;">
+				  
+					  <div class="card-header">Linux Servers </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Total Linux Servers</h5>
+					    <h3 class="card-text">{{ linux_servers }}</h3>
+					</div>
+					  
+				  </div>
+				</div>
+			</div>
+
+			<!---->
+
+			<div class="col-auto mb-3">
+				<div clas="card-deck">
+					<div class="card text-white bg-success mb-4" style="max-width: 18rem;">
+				  
+					  <div class="card-header">Microsoft Servers </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Total Microsoft Servers</h5>
+					    <h3 class="card-text">{{ microsoft_servers }}</h3>
+					</div>
+					  
+				  </div>
+				</div>
+			</div>
+
+			<!---->
+
+			
+		</div>
+	</div>
+
+
+
+	
+	<!---->
+	<div class="container-fluid mt-4">
+		<div class="row justify-content-center">
+			
+			<div class="col-auto mb-3">
+				<div clas="card-deck">
+					<div class="card text-white bg-warning mb-4" style="max-width: 18rem;">
+				  
+					  <div class="card-header">Storage Used </div>
+					  <div class="card-body">
+					    <h6 class="card-title">Total Storage Used (Servers)</h6>
+					    <h4 class="card-text">{{ used_storeged }} GB</h4>
+					</div>
+					  
+				  </div>
+				</div>
+			</div>
+
+			<!---->
+			<div class="col-auto mb-3">
+				<div clas="card-deck">
+					<div class="card text-white bg-secondary mb-4" style="max-width: 18rem;">
+				  
+					  <div class="card-header">Core Used </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Total Core Used in Servers</h5>
+					    <h3 class="card-text">{{ cores }}</h3>
+					</div>
+					  
+				  </div>
+				</div>
+			</div>
+
+			<!---->
+
+			<div class="col-auto mb-3">
+				<div clas="card-deck">
+					<div class="card text-white bg-info mb-4" style="max-width: 18rem;">
+				  
+					  <div class="card-header">RAM Used </div>
+					  <div class="card-body">
+					    <h5 class="card-title">Total RAM Used in Servers</h5>
+					    <h3 class="card-text">{{ rams }} GB</h3>
+					</div>
+					  
+				  </div>
+				</div>
+			</div>
+
+			<!---->
+
+			
+		</div>
+	</div>
+
+
 {% endblock %}

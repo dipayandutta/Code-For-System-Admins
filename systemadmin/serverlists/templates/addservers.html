@@ -15,6 +15,8 @@
 			<div class="col md-12">
 				<div class="jumbotron p-4">
 					<h2>Total Servers {{ total_servers }}
+						Linux OS {{ linux_os }}
+						Microsoft OS {{ microsoft_os }}
 						<button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#addserver">Add Server</button>
 					</h2>
 				</div>
@@ -25,7 +27,7 @@
 					
 					<th>Creation Date</th>
 					<th>IP Address</th>
-					<th>Storage</th>
+					<th>Storage(IN GB)</th>
 					<th>Memory</th>
 					<th>Core</th>
 					<th>Allocated For</th>
@@ -40,8 +42,8 @@
 						
 						<td>{{ server.CreatedAt }}</td>
 						<td>{{ server.ipaddress }}</td>
-						<td>{{ server.hdd }}</td>
-						<td>{{ server.ram }}</td>
+						<td>{{ server.hdd }} GB</td>
+						<td>{{ server.ram }} GB</td>
 						<td>{{ server.core }}</td>
 						<td>{{ server.allocatedFor }}</td>
 						<td>{{ server.creationOrder }}</td>
@@ -71,7 +73,7 @@
 										</div>
 										<div class="form-group">
 											<label>Storage:</label>
-											<input type="text" class="form-control" name="hdd" value="{{ server.hdd }}" required>
+											<input type="text" class="form-control" name="hdd" value="{{ server.hdd }}" placeholder="in GB" required>
 										</div>
 										<div class="form-group">
 											<label>Memroy:</label>
@@ -108,8 +110,8 @@
 											<br>
 											<select name="license">
 												
-												<option value="paid">Microsoft Licensed Applied</option>
-												<option value="notpaid">Waiting For Microsoft License</option>
+												<option value="Applied">Microsoft Licensed Applied</option>
+												<option value="Waiting For License">Waiting For Microsoft License</option>
 												<option value="opensource">Open Source</option>
 											</select>
 										</div>
@@ -168,7 +170,7 @@
 							</div>
 							<div class="form-group">
 								<label>Storage</label>
-								<input type="text" class="form-control" name="hdd" required>
+								<input type="text" class="form-control" name="hdd" required placeholder="in GB">
 							</div>
 							<div class="form-group">
 								<label>Memory:</label>
@@ -205,8 +207,8 @@
 								<br>
 								<select name="license">
 									<option value="">---Please Select License Type</option>
-									<option value="paid">Microsoft Licensed Applied</option>
-									<option value="notpaid">Waiting For Microsoft License</option>
+									<option value="Applied">Microsoft Licensed Applied</option>
+									<option value="Waiting for License">Waiting For Microsoft License</option>
 									<option value="opensource">Open Source</option>
 								</select>
 							</div>

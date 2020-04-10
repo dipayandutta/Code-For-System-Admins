@@ -17,7 +17,17 @@ def AddServers(request):
 	# get total number of servers using IPAddress
 	ipaddress_total = ServerDetails.objects.values_list('ipaddress',flat=True)
 	ipaddress_total_count = len(ipaddress_total)
-	return render(request,template,{'title':title,'servers':servers,'total_servers':ipaddress_total_count})
+
+	os_total 		= ServerDetails.objects.values_list('License',flat=True)
+	linux_os 		= 0
+	microsoft_os  	= 0
+	for os_license in os_total:
+		if os_license == 'opensource':
+			linux_os+=1
+		else:
+			microsoft_os+=1
+
+	return render(request,template,{'title':title,'servers':servers,'total_servers':ipaddress_total_count,'linux_os':linux_os,'microsoft_os':microsoft_os})
 
 
 @login_required(login_url='/login/')
