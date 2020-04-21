@@ -434,3 +434,10 @@ $ docker run --rm -v $(pwd):/var/www/html -v /var/www/html/vendor -p 80:80 <imag
 EXAMPLE OF RUNNING A NGINX CONTAINER IMAGE WHOSE FILES ARE LOCATED IN THE LOCAL MACHINE 
 =========================================================================================
 docker run -p 8080:80 --name webserver -v /root/index.html:/usr/share/nginx/html/index.html:ro -detach nginx
+
+
+++++++++++++++
+Docker File:-
+++++++++++++++
+The Docker file are basically the text format of the docker images , We dont need any extensions . 
+docker build command will build the docker image from the docker file .
