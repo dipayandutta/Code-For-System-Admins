@@ -1,0 +1,19 @@
+vi /etc/yum/pluginconf.d/subscription-manager.conf
+enabled=0
+
+
+*****
+The yum/dnf plugins: /etc/dnf/plugins/subscription-manager.conf were automatically enabled for the benefit of Red Hat Subscription Management.
+If not desired, use "subscription-manager config --rhsm.auto_enable_yum_plugins=0" to block this behavior.
+
+
+****Now download and install the epel-relase repo***
+dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+
+dnf update
+dnf --disablerepo="*" --enablerepo="epel" list available
+
+
+check the repo list
+yum repolist
+
