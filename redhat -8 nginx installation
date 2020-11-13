@@ -1,0 +1,35 @@
+To install the nginx application server on the RedHat 8 box without the subscription 
+follow the steps
+
+First add the nginx repo
+
+in
+/etc/yum.repos.d/nginx.repo
+
+[nginx]
+name=nginx repo
+baseurl=https://nginx.org/packages/rhel/$releasever/$basearch/
+gpgcheck=0
+enabled=1
+
+
+Second
+dnf update
+
+Third Check the repo list
+yum repolist
+
+
+Now time to install the nginx application server on the Linux Box
+
+dnf install nginx
+
+Now time to add the rule on the firewall
+
+#firewall-cmd --permanent --zone=public --add-service=http
+#firewall-cmd --permanent --zone=public --add-service=http
+#firewall-cmd --reload
+
+
+Check the Firewall
+#firewall-cmd --list-all
