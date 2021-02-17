@@ -1,0 +1,3 @@
+sudo zypper ar -cfp 90 http://ftp.gwdg.de/pub/linux/misc/packman/suse/openSUSE_Leap_15.2/ packman
+sudo zypper ref
+sudo zypper up --allow-vendor-change
