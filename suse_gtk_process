@@ -1,0 +1,2 @@
+export GTK_IM_MODULE=scim-bridge
+gcc -o simple example.c `pkg-config --libs --cflags gtk+-3.0`
