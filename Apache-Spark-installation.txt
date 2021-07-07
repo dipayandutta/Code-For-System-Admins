@@ -1,0 +1,65 @@
+##APACHE-SPARK INSTALLATION ON UBUNTU 20.04 python3 (version-3.8)
+
+
+STEP-1
+-----------
+Download Apache spark https://mirrors.estointernet.in/apache/spark/spark-3.0.3/spark-3.0.3-bin-hadoop2.7.tgz
+
+STEP-2
+-----------
+sudo mkdir -p /usr/local/spark
+
+STEP-3
+--------
+
+extract on move the directory 
+tar xzvf spark-3.0.3-bin-hadoop2.7.tgz
+sudo mv Downloads/spark-3.0.3-bin-hadoop2.7 /usr/local/spark/
+
+
+STEP-4
+---------
+
+CHANGE THE ~/.bashrc
+
+ADD THEM AT THE LAST OF .bashrc
+export SPARK_HOME="/usr/local/spark/spark-3.0.3-bin-hadoop2.7"
+export PATH="${PATH}:${SPARK_HOME}/bin"
+
+export PYSPARK_PYTHON="/usr/bin/python3"
+export PYSPARK_DRIVER_PYTHON="/usr/bin/python3"
+
+
+source ~/.bashrc
+
+STEP-4
+------------
+INSTALL pyspark for python
+
+sudo pip3 install pyspark
+
+STEP-5
+---------
+
+SET THE JAVA_HOME
+
+STEP-6
+------------
+cd /usr/local/spark/spark-3.0.3-bin-hadoop2.7/bin
+./spark-shell
+./pyspark
+
+
+STEP-7 
+------------
+PYTHON APACHE SPARK CONNECTION SCRIPT
+
+from pyspark.sql import SparkSession
+
+sc = SparkSession.builder.appName('helloworld').getOrCreate()
+
+print(type(sc),"\n")
+print(dir(sc))
+
+
+
