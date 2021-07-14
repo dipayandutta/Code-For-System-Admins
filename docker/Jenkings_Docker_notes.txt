@@ -1,0 +1,7 @@
+====Sample docker-compose.yml file for Jenkins==========
+
+version: '3'
+services:
+	jenkins:
+		container_name: jenkins
+		image: jenkins/jenkins
