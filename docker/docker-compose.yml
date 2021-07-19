@@ -1,0 +1,9 @@
+version: '3'
+services:
+    ci_container:
+        image: docker.io/bitnami/codeigniter:3
+        ports:
+            - '8000:8000'
+        volumes:
+            - '.:/app'
+
