@@ -1,0 +1,2 @@
+curl -1sLf 'https://dl.cloudsmith.io/public/asbru-cm/release/cfg/setup/bash.deb.sh' | sudo -E bash
+sudo apt install asbru-cm 
