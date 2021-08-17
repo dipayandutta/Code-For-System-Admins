@@ -18,3 +18,7 @@
    43  su - node
    44  history 
    45  history > docker_install.txt
+   firewall-cmd --zone=public --add-masquerade --permanent
+   firewall-cmd --reload
+   curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+   chnod +x /usr/local/bin/docker-compose
