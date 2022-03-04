@@ -1,0 +1,13 @@
+boost installation process
+
+move the boost directory in the /usr/include of suse box
+cd boost
+./bootstrap.sh
+./b2 install
+./bjam install
+
+sudo zypper install libboost_filesystem1_75_0
+
+
+process of compilation
+g++ thread.cpp -pthread -lboost_thread -lboost_system
