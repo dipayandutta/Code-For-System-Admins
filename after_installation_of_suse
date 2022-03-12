@@ -1,0 +1,110 @@
+sudo zypper install -t pattern devel_basis
+sudo zypper install gtkmm3-devel-3.20.1-4.3
+sudo zypper install gtk3 gtk3-devel
+sudo zypper install gtk2 gtk2-devel
+/*Boost Installation Process*/
+boost installation process
+
+move the boost directory in the /usr/include of suse box
+cd boost
+./bootstrap.sh
+./b2 install
+./bjam install
+
+sudo zypper install libboost_filesystem1_75_0
+
+
+process of compilation
+g++ thread.cpp -pthread -lboost_thread -lboost_system
+
+sudo zypper install boost boost-base boost-gnu-hpc boost-gnu-hpc-devel boost-gnu-mpich-hpc
+sudo zypper install libbbost_filesystem1_66_0 libbbost_filesystem1_66_0-devel libbost_filesystem_legacy
+sudo zypper install postgresql14 postgresql14-contrib postgresql14-devel postgresql14-docs postgresql14-llvmjit postgresql14-plperl postgresql14-plpython postgresql14-pltcl postgresql14-server postgresql14-server-devel postgresql14-test
+/*PostgreSQL Details*/
+postgresql details
+
+
+ Create a new PostgreSQL user called testuser, allow user to login, but NOT creating databases
+$ sudo -u postgres createuser --login --pwprompt testuser
+
+# Create a new database called testdb, owned by testuser.
+$ sudo -u postgres createdb --owner=testuser testdb
+
+login withnew user and newdatabase
+psql -U <username> <databasename>
+#su - postgres
+psql -- password -- node
+psql -- node
+cuser -- password connect
+
+cdatabase owned by cuser 
+
+
+
+sudo -u postgres createuser --login --pwprompt cpp
+Enter password for new role: 
+Enter it again: 
+Password: 
+
+sudo -u postgres createdb --owner=cpp cliconnection
+
+psql -U cpp cliconnection
+
+connect to database 
+\c databasename databaseuser
+
+\dt - find any relations
+
+We will be using an enumeration (TYPE) in our table, let's define it.
+mytest=# CREATE TYPE cat_enum AS ENUM ('coffee', 'tea');
+CREATE TYPE
+
+Display all types via /dT or /dT+ for more details.
+mytest=# \dT+
+                        List of data types
+ Schema |   Name   | Internal name | Size | Elements | Description 
+--------+----------+---------------+------+----------+-------------
+ public | cat_enum | cat_enum      | 4    | coffee  +| 
+        |          |               |      | tea      | 
+
+
+
+-- Create a new table.
+mytest=# CREATE TABLE IF NOT EXISTS cafe (
+  id SERIAL PRIMARY KEY,        -- AUTO_INCREMENT integer, as primary key
+  category cat_enum NOT NULL,   -- Use the enum type defined earlier
+  name VARCHAR(50) NOT NULL,    -- Variable-length string of up to 50 characters
+  price NUMERIC(5,2) NOT NULL,  -- 5 digits total, with 2 decimal places
+  last_update DATE              -- 'YYYY-MM-DD'
+);
+
+
+===Display all the tables in the current database 
+
+\dt+
+
+=-===Display details of a particular table.
+\d+ <tablename>
+
+
+=== Insert data 
+
+-- Insert rows.
+mytest=# INSERT INTO cafe (category, name, price) VALUES
+  ('coffee', 'Espresso', 3.19),
+  ('coffee', 'Cappuccino', 3.29),
+  ('coffee', 'Caffe Latte', 3.39),
+  ('coffee', 'Caffe Mocha', 3.49),
+  ('coffee', 'Brewed Coffee', 3.59),
+  ('tea', 'Green Tea', 2.99),
+  ('tea', 'Wulong Tea', 2.89);
+
+
+
+list all users 
+Use \du or \du+ psql command to list all users in the current database server
+
+Use the SELECT statement to query the user information from the pg_catalog.pg_user catalog
+
+
+select * from pg_catalog.pg_user
