@@ -23,6 +23,10 @@ Enter it again:
 Password: 
 
 sudo -u postgres createdb --owner=cpp cliconnection
+postgres=# CREATE DATABASE c_connection WITH OWNER=dipayan ENCODING='UTF-8' CONNECTION LIMIT = -1;
+postgres=#\q
+
+psql -U dipayan c_connection
 
 psql -U cpp cliconnection
 
