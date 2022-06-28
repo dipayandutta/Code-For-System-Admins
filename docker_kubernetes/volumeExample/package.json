@@ -1,0 +1,24 @@
+{
+  "name": "data-volume-example",
+  "version": "1.0.0",
+  "description": "Docker volume Sharing Example",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "scripts":{
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  },
+/* This is nodeMon is need to restart node server when ever a change in js file */
+
+  "devDependencies": {
+    "nodemon": "2.0.4"
+  }
+}
