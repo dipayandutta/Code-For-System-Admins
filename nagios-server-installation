@@ -1,0 +1,137 @@
+ 							                            ------>   [Installation of Nagios Core Server ] <---------
+						                                     -------------------------------------------
+
+[++]Change SELinux Status[++]
+--------------------------------
+sed -i 's/SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config && setenforce 0
+sestatus
+
+
+[++] install dependencies[++]
+--------------------------------
+dnf install gcc gd gd-devel net-snmp openssl-devel unzip postfix net-snmp-utils -y
+dnf groupinstall "Development Tools" -y
+dnf install php-*
+dnf install php-fpm
+dnf install httpd
+
+[++]Enable services[++]
+---------------------------
+ systemctl start php-fpm.service
+ systemctl enable --now php-fpm.service
+ systemctl start httpd
+ systemctl enable --now httpd.service
+
+[++]Download the Nagios Package[++]
+-------------------------------------
+ curl -SL https://github.com/NagiosEnterprises/nagioscore/releases/download/nagios-4.4.6/nagios-4.4.6.tar.gz | tar -xzf -
+
+
+[++]Install the Nagios Application [++]
+------------------------------------------
+cd nagios-4.4.6/
+./configure
+make all
+make install-groups-users
+usermod -a -G nagios apache
+make install
+make install-daemoninit
+make install-commandmode
+make install-config
+make install-webconf
+make install-exfoliation
+make install-classicui
+
+[++] create a htpassword for login [++]
+------------------------------------------
+
+ htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
+
+
+systemctl restart httpd
+
+[++]Download nagios plugins[++]
+-----------------------------------
+
+cd ..
+
+curl -SL https://github.com/nagios-plugins/nagios-plugins/releases/download/release-2.3.3/nagios-plugins-2.3.3.tar.gz | tar -xzf -
+
+cd nagios-plugins-2.3.3
+
+[++] install nagios plugins[++]
+----------------------------------
+
+./configure --with-nagios-user=nagios --with-nagios-group=nagios
+
+make install
+
+/usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+
+[++] start and enable nagios service[++]
+-----------------------------------------
+systemctl start nagios.service
+
+systemctl enable --now nagios.service
+
+
+[++]Open ports in firewall[++]
+----------------------------------
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-port=443/tcp
+
+
+[++] Create a separate directory for clients[++]
+---------------------------------------------------
+/usr/local/nagios/etc
+ mkdir servers
+chown -R nagios:nagios /usr/local/nagios/etc/servers/
+ chmod g+w /usr/local/nagios/etc/servers
+
+
+[++] Modify Nagios configuration for the newly created directory[++]
+----------------------------------------------------------------------
+nagios config file
+/usr/local/nagios/etc/nagios.cfg
+line number - 51 
+uncomment - cfg_dir=/usr/local/nagios/etc/servers
+
+
+[++] Define commands [++]
+----------------------------
+/usr/local/nagios/etc/objects/commands.cfg
+
+define command{
+        command_name check_nrpe
+        command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -t 30 -c $ARGUMENTS$
+}
+
+
+[++] Add file and command for client monitoring [++]
+-------------------------------------------------------
+vim /usr/local/nagios/etc/servers/ubuntu-host.cfg
+
+define host{
+        use linux-server
+        host_name ubuntu-docker
+        alias ubuntu client
+        address 192.168.56.115
+        max_check_attempts 5
+        check_period 24x7
+        notification_interval 30
+        notification_period 24x7
+}
+
+define service{
+        use generic-service
+        host_name ubuntu-docker
+        service_description PING
+        check_command check_ping!200.0,20%!400.0,90%
+}
+
+[++] Restart the nagios service [++]
+-------------------------------------
+
+systemctl restart nagios.service
+
