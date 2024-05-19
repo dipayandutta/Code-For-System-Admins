@@ -1,0 +1,48 @@
+
+nagios client
+
+dnf install -y gcc glibc-common openssl openssl-devel perl wget
+
+
+ wget https://github.com/NagiosEnterprises/nrpe/releases/download/nrpe-4.0.3/nrpe-4.0.3.tar.gz
+
+tar zxf nrpe-4.0.3.tar.gz
+ll
+cd nrpe-4.0.3/
+
+
+./configure --enable-command-args
+make all
+make install-groups-users
+usermod -a -G nagios apach
+make install
+
+sh -c "echo >> /etc/services"
+sh -c "sudo echo '# Nagios Services' >> /etc/services"
+
+sh -c "sudo echo 'nrpe 5666/tcp' >> /etc/services"
+
+
+make install-init
+
+systemctl enable nrpe
+
+
+
+ubuntu 
+-------------------
+apt install nagios-nrpe-server nagios-plugins
+ systemctl status nagios-nrpe-server
+
+vim /etc/nagios/nrpe.cfg
+
+allowed_hosts = 
+dont_blame_nrpe=
+
+
+uncomment from line no - 300 to 337
+
+
+ systemctl restart nagios-nrpe-server.service
+
+
