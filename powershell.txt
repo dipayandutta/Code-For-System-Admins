@@ -23,3 +23,7 @@ $PSVersionTable
 Drive Details
 =======================
  Get-PSDrive
+
+Network Connection Check
+===========================
+Test-NetConnection <IP Address> -Port <Port Number>
