@@ -105,11 +105,17 @@ def checkListOfUsers():
 
 def checkProcessDetails():
     checkTotalRunningProcess = "ps -e | wc -l"
+    mostMemoryConsumeProcess = "ps -eo pid,ppid,%cpu,%mem,cmd --sort=-%cpu | awk NR==1,NR==2"
     
     _stdinCheckTotalRunningProcess , _stdoutCheckTotalRunningProcess , _stderrCheckTotalProcess = client.exec_command(checkTotalRunningProcess)
     print(Fore.BLACK+"----------------------------------------------")
     print(Fore.YELLOW+"Total Number of Running Process")
     print(_stdoutCheckTotalRunningProcess.read().decode())
+
+    _stdinMostMemoryConsumeProcess,_stdoutMostMemoryConsumeProcess,_stderrMostMemoryConsumeProcess = client.exec_command(mostMemoryConsumeProcess)
+    print(Fore.RED+"Most Memory Consumeing Process")
+    print(Fore.BLACK+"-----------------------------------")
+    print(_stdoutMostMemoryConsumeProcess.read().decode())
 
 if __name__ == '__main__':
     OsCheck()
