@@ -4,8 +4,8 @@ from colorama import Fore, Style
 
 #Host  Details 
 host = "127.0.0.1"
-username = "root"
-password = "nodeMachine"
+username = ""
+password = ""
 
 # Root Storage Checker
 commandToCheck_RootStorageTotal = "df -h / | awk 'NR==2{print  $2}'| cut -d 'G' -f 1"
