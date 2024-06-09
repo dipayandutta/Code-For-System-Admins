@@ -1,0 +1,105 @@
+apache ModSecurity
+---------------------
+
+	Provides protection for xss, sqlinjection, RFI(Remote File Inclusion) - This module 
+	works as WAF(Web Application Firewall for apache web application server).
+
+-------->OSWP link -> https://owasp.org/www-project-modsecurity-core-rule-set/
+
+ [+]Install apache mod security module
+
+ #apt install libapache2-mod-security2
+
+ [+] Enable Headers
+ # a2enmod headers
+
+ [+] Restart apache server
+ # systemctl restart apache2.service
+
+ [+] path of mod security
+ # ls -alps /usr/share/modsecurity-crs/
+
+ [+] Download the core rule set from github
+ # git clone https://github.com/coreruleset/coreruleset.git
+
+ [+] Delete the default config and security directory
+ # rm -rf /usr/share/modsecurity-crs/
+
+ [+] send the rule set to /usr/share
+ # cp -r modsecurity-crs /usr/share/
+
+ [+] Change the name of the config file
+ #  mv /usr/share/modsecurity-crs/crs-setup.conf.example /usr/share/modsecurity-crs/crs-setup.conf
+
+ [+] mod security configuration file and renmae the file
+ # ls -la /etc/modsecurity/
+ # mv /etc/modsecurity/modsecurity.conf-recommended /etc/modsecurity/modsecurity.conf
+
+ [*] Enable the security rule engine
+ # vim /etc/modsecurity/modsecurity.conf
+        Comment this #SecRuleEngine DetectionOnly
+	SecRuleEngine On
+
+ [*] Now enable the modSecurity within the apache
+
+  # vim /etc/apache2/apache2.conf
+
+   At the top add this 
+
+   <IfModule security2_module>
+        Include /usr/share/modsecurity-crs/crs-setup.conf
+        Include /usr/share/modsecurity-crs/rules/*.conf
+    </IfModule>
+ 
+  # vim /etc/apache2/sites-enabled/000-default.conf
+   	<VirtualHost>
+
+	 SecRuleEngine On
+        <IfModule security2_module>
+                Include /usr/share/modsecurity-crs/crs-setup.conf
+                Include /usr/share/modsecurity-crs/rules/*.conf
+        </IfModule>	
+
+	</VirtualHost>
+ 
+
+  [*] Check the apache2ctl configuration
+   # apache2ctl configtest 
+
+    ----> If this throughs error 
+   # rm /usr/share/modsecurity-crs/rules/REQUEST-922-MULTIPART-ATTACK.conf 
+   # apache2ctl configtest
+   
+
+ [*] Now restart the apache web application server 
+  # systemctl restart apache2.service
+
+
+
+------------------------------------------------------------------
+
+Directory Configuration
+
+----------------------------------------------------------------
+
+vim /etc/apache2/apache2.conf
+
+<Directory /var/www/>
+	
+	Options -Indexes ----> This will stop the directory enumuration
+	Require all granted
+<Directory>
+
+
+<Directory /var/www/html/dirname>
+	AllowOverride All
+	Options -Indexes ----> This will stop the directory enumuration
+	ServerSignature Off
+<Directory>
+
+[+] Restrart apache2
+ # systemctl restart apache2
+
+
+# vim .htaccess
+	Options -Indexes
