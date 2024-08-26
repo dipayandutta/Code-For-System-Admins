@@ -1,0 +1,32 @@
+
+Ovirt Engine Trouble Shoot If Ovirt Engine Certificate Has Expired
+----------------------------------------------------------------------
+
+
+# cp -a /etc/pki/ovirt-engine "/etc/pki/ovirt-engine.$(date "+%Y%m%d")"
+# SUBJECT="$(openssl x509 -subject -noout -in /etc/pki/ovirt-engine/certs/apache.cer | sed 's/subject= //')"
+# /usr/share/ovirt-engine/bin/pki-enroll-pkcs12.sh --name=apache --password="@PASSWORD@" --subject="${SUBJECT}"
+# openssl pkcs12 -passin "pass:@PASSWORD@" -nokeys -in /etc/pki/ovirt-engine/keys/apache.p12 > /etc/pki/ovirt-engine/certs/apache.cer
+# openssl pkcs12 -passin "pass:@PASSWORD@" -nocerts -nodes -in /etc/pki/ovirt-engine/keys/apache.p12 > /etc/pki/ovirt-engine/keys/apache.key.nopass
+# chmod 0600 /etc/pki/ovirt-engine/keys/apache.key.nopass
+
+
+
+Ovirt Engine Command to change password 
+
+------------------------------------------------------
+
+ ovirt-aaa-jdbc-tool user show
+ ovirt-aaa-jdbc-tool user --help
+ psql -U engine  -h localhost ovirt-aaa-jdbc-tool user password-reset <username> --password=pass:password ovirt-aaa-jdbc-tool user password-reset <username> --password=pass:password
+ ovirt-aaa-jdbc-tool user password-reset admin --password=pass:password
+ psql -U engine -h localhost
+
+-------------------------------------------------------
+
+
+
+
+
+
+
