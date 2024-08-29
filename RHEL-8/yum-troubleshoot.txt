@@ -1,0 +1,8 @@
+vim /etc/rhsm/rhsm.conf
+mv /etc/rhsm/rhsm/rhsm.conf /etc/rhsm/rhsm.conf.01
+yum clean all
+
+
+-->> This Works <<---
+vim /etc/yum/pluginconf.d/subscription-manager.conf
+yum clean all

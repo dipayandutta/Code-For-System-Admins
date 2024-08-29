@@ -1,0 +1,31 @@
+parted
+----------------
+parted /dev/sdb
+
+print
+
+rm 1 
+
+quit
+
+Create Physical Volume
+------------------------
+pvcreate /dev/sbd
+
+wipe the filesystem
+---------------------
+wipefs -a /dev/sdb
+
+Create Volume Group
+-------------------
+vgcreate vg-example01 /dev/sdb
+
+Create LVM
+--------------
+
+lvcreate -n lvm-01 -L 4T vg-example01
+lvcreate -n lvm-02 -l 100%FREE vg-example01
+
+list all lvm
+--------------
+lvs
