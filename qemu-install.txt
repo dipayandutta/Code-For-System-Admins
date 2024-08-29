@@ -1,0 +1,4 @@
+Install QEMU in Rocky-Linux
+dnf install qemu-kvm libvirt virt-manager virt-install
+dnf -y install bridge-utils virt-top libguestfs-tools bridge-utils virt-viewer
+
