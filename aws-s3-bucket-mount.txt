@@ -1,0 +1,23 @@
+dnf install s3fs-fuse
+touch /etc/passwd-s3fs
+vim /etc/passwd-s3fs
+ACCESS_KEY:SECRET_KEY
+chmod 0640 /etc/passwd-s3fs
+
+CREATA A USER AND GIVE HIM/HER THE S3FULLACCESS PERMISSION
+
+CREATE A BUCKET IN S3 BUCKET 
+
+mkdir -p /home/dipayan/s3bucket
+
+command to mount
+---------------------
+s3fs uploaddatatos3 /home/dipayan/s3bucket/ -o passwd_file=/etc/passwd-s3fs
+
+fstab entry
+--------------
+s3fs#uploaddatatos3 /home/dipayan/s3bucket fuse _netdev,rw,nosuid,nodev,allow_other,nonempty 0 0
+
+unmount the mounted S3 drive
+---------------------------
+umount -l /path/to/mount
