@@ -1,0 +1,10 @@
+
+vgextend vg-data /dev/xvdb2
+vgs
+lvs
+lvextend -L +1G /dev/vg-data/lv-data 
+lvs
+umount /data 
+xfs_growfs /dev/mapper/vg--data-lv--data 
+mount /data
+df -hT
